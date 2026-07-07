@@ -1,0 +1,20 @@
+# Core Architectural Rules (Python 3.12+ | Domain-Driven Isolation)
+
+## 1. Architectural Style & Boundaries (Modular Monolith)
+- Every module is a self-contained Bounded Context focused on a specific domain capability.
+- Modules must be completely isolated, decoupled, and share zero databases or global state with other modules.
+- Pure Domain: Module internals must be pure domain code using Python's standard library. Third-party libraries for validation, typing, or frameworks (e.g., Pydantic, Pandas, FastAPI, SQLAlchemy) are Strictly FORBIDDEN inside the domain layer.
+
+## 2. Infrastructure & Orchestration (Outside the Modules)
+- Infrastructure (APIs, DB Persistence, Event Brokers, Third-Party Library integrations like Pydantic) lives OUTSIDE the domain modules.
+- Use Cases (Application Layer) orchestrate the flow: they fetch data, handle third-party serialization if needed, pass native structures to the domain modules for pure calculation, and save/broadcast results.
+- If a module is pure calculus (like 'classification'), it must NOT contain infrastructure directories, repositories, or event code. It only exposes its native models and pure functions/services.
+
+## 3. Coding Standards & Typing
+- Models: All domain models/Value Objects must be `@dataclass(frozen=True, slots=True)` by default.
+- Naming: Use exact responsibility-driven names (e.g., 'RegimeClassifier', 'ClassificationSignal'). Strictly FORBIDDEN vague suffixes: 'Manager', 'Helper', 'Processor', 'Engine', 'Utils'.
+- Typing: Strict typing using native Python types or local Protocols. Avoid 'Any' or 'dict' in public contracts.
+
+## 4. Testing Strategy
+- Tests must be strictly unit tests, reside inside each module's directory (`/tests`), and use only standard testing tools (or pytest as a runner).
+- Domain logic must be testable without any external library dependencies or framework setup.

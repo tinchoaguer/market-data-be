@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "slug": "fastapi-bootstrap",
+    "title": "FastAPI Backend Bootstrap",
+    "description": "Create the HTTP application using FastAPI as the backend entry point and configure the project for API execution.",
+    "acceptance": [
+      "FastAPI is installed and configured as a project dependency.",
+      "The application starts successfully using a standard ASGI server.",
+      "The API exposes a health endpoint returning HTTP 200.",
+      "The project structure separates application, domain, and infrastructure concerns."
+    ],
+    "status": "Done"
+  },
+  {
+    "id": 2,
+    "slug": "mock-market-data-resources",
+    "title": "Mock Market Data Resources",
+    "description": "Provide realistic market data fixtures for BTC/USDT and ETH/USDT using the MarketData model schema.",
+    "acceptance": [
+      "JSON resources exist for BTC/USDT and ETH/USDT.",
+      "Each JSON document conforms to analysis.models.market.MarketData.",
+      "Mock resources are stored under a dedicated resources directory.",
+      "The mock data can be loaded without code changes."
+    ],
+    "status": "Pending"
+  },
+  {
+    "id": 3,
+    "slug": "market-data-provider",
+    "title": "Market Data Provider Abstraction",
+    "description": "Implement a market data service using the Provider (Adapter) pattern capable of serving market data independently of its source.",
+    "acceptance": [
+      "A provider interface abstracts the market data source.",
+      "A mock provider loads MarketData objects from JSON resources.",
+      "The application depends only on the provider abstraction.",
+      "Additional providers can be introduced without modifying the application logic."
+    ],
+    "status": "Pending"
+  },
+  {
+    "id": 4,
+    "slug": "analysis-classification-pipeline",
+    "title": "Analysis to Classification Pipeline",
+    "description": "Connect the deterministic analysis module with the classification module using the existing assessment_to_classifications mapper.",
+    "acceptance": [
+      "MarketData is processed by the deterministic analysis module.",
+      "Analysis assessments are transformed using assessment_to_classifications.py.",
+      "The classifier module receives only mapped DTOs.",
+      "No direct coupling exists between analysis internals and the classifier."
+    ],
+    "status": "Pending"
+  },
+  {
+    "id": 5,
+    "slug": "classification-api",
+    "title": "Classification REST API",
+    "description": "Expose classification results through a REST API endpoint using DTOs instead of domain objects.",
+    "acceptance": [
+      "The API accepts a market symbol as input.",
+      "The endpoint returns the current classification DTO.",
+      "HTTP responses use API DTOs rather than domain models.",
+      "Invalid requests return appropriate HTTP status codes."
+    ],
+    "status": "Pending"
+  }
+]

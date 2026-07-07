@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: market-data-be
+Version: 5.5.0
+Summary: Market Data backend
+Author-email: Your Name <your.email@example.com>
+Requires-Python: >=3.12
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: httpx; extra == "dev"
