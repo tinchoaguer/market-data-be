@@ -1,0 +1,473 @@
+{
+  "symbol": "ETH/USDT",
+  "current_price": "3463.75",
+  "order_book": {
+    "bids": [
+      {
+        "price": "3463.70",
+        "quantity": "18.400"
+      },
+      {
+        "price": "3463.65",
+        "quantity": "18.750"
+      },
+      {
+        "price": "3463.60",
+        "quantity": "19.100"
+      },
+      {
+        "price": "3463.55",
+        "quantity": "19.450"
+      },
+      {
+        "price": "3463.50",
+        "quantity": "19.800"
+      }
+    ],
+    "asks": [
+      {
+        "price": "3463.80",
+        "quantity": "16.5600"
+      },
+      {
+        "price": "3463.85",
+        "quantity": "16.8750"
+      },
+      {
+        "price": "3463.90",
+        "quantity": "17.1900"
+      },
+      {
+        "price": "3463.95",
+        "quantity": "17.5050"
+      },
+      {
+        "price": "3464.00",
+        "quantity": "17.8200"
+      }
+    ]
+  },
+  "series": [
+    {
+      "timeframe": "15m",
+      "candles": [
+        {
+          "start_time": "2024-06-01T00:00:00Z",
+          "end_time": "2024-06-01T00:15:00Z",
+          "open": "3485.00",
+          "high": "3488.400",
+          "low": "3460.350",
+          "close": "3463.75",
+          "base_volume": "18.400",
+          "quote_volume": "63733.00",
+          "trade_count": 1200,
+          "buy_volume": "9.56800",
+          "buy_quote_volume": "33141.16"
+        },
+        {
+          "start_time": "2024-06-01T00:15:00Z",
+          "end_time": "2024-06-01T00:30:00Z",
+          "open": "3463.75",
+          "high": "3467.150",
+          "low": "3443.350",
+          "close": "3446.75",
+          "base_volume": "18.820",
+          "quote_volume": "64867.84",
+          "trade_count": 1237,
+          "buy_volume": "9.78640",
+          "buy_quote_volume": "33731.27"
+        },
+        {
+          "start_time": "2024-06-01T00:30:00Z",
+          "end_time": "2024-06-01T00:45:00Z",
+          "open": "3446.75",
+          "high": "3450.150",
+          "low": "3430.600",
+          "close": "3434.00",
+          "base_volume": "19.240",
+          "quote_volume": "66070.16",
+          "trade_count": 1274,
+          "buy_volume": "10.00480",
+          "buy_quote_volume": "34356.48"
+        },
+        {
+          "start_time": "2024-06-01T00:45:00Z",
+          "end_time": "2024-06-01T01:00:00Z",
+          "open": "3434.00",
+          "high": "3437.400",
+          "low": "3422.100",
+          "close": "3425.50",
+          "base_volume": "19.660",
+          "quote_volume": "67345.33",
+          "trade_count": 1311,
+          "buy_volume": "10.22320",
+          "buy_quote_volume": "35019.57"
+        },
+        {
+          "start_time": "2024-06-01T01:00:00Z",
+          "end_time": "2024-06-01T01:15:00Z",
+          "open": "3425.50",
+          "high": "3428.900",
+          "low": "3417.850",
+          "close": "3421.25",
+          "base_volume": "20.080",
+          "quote_volume": "68698.70",
+          "trade_count": 1348,
+          "buy_volume": "10.44160",
+          "buy_quote_volume": "35723.32"
+        },
+        {
+          "start_time": "2024-06-01T01:15:00Z",
+          "end_time": "2024-06-01T01:30:00Z",
+          "open": "3421.25",
+          "high": "3424.650",
+          "low": "3417.850",
+          "close": "3421.25",
+          "base_volume": "20.500",
+          "quote_volume": "70135.62",
+          "trade_count": 1385,
+          "buy_volume": "10.66000",
+          "buy_quote_volume": "36470.52"
+        },
+        {
+          "start_time": "2024-06-01T01:30:00Z",
+          "end_time": "2024-06-01T01:45:00Z",
+          "open": "3421.25",
+          "high": "3428.900",
+          "low": "3417.850",
+          "close": "3425.50",
+          "base_volume": "20.920",
+          "quote_volume": "71661.46",
+          "trade_count": 1422,
+          "buy_volume": "10.87840",
+          "buy_quote_volume": "37263.96"
+        },
+        {
+          "start_time": "2024-06-01T01:45:00Z",
+          "end_time": "2024-06-01T02:00:00Z",
+          "open": "3425.50",
+          "high": "3437.400",
+          "low": "3422.100",
+          "close": "3434.00",
+          "base_volume": "21.340",
+          "quote_volume": "73281.56",
+          "trade_count": 1459,
+          "buy_volume": "11.09680",
+          "buy_quote_volume": "38106.41"
+        },
+        {
+          "start_time": "2024-06-01T02:00:00Z",
+          "end_time": "2024-06-01T02:15:00Z",
+          "open": "3434.00",
+          "high": "3450.150",
+          "low": "3430.600",
+          "close": "3446.75",
+          "base_volume": "21.760",
+          "quote_volume": "75001.28",
+          "trade_count": 1496,
+          "buy_volume": "11.31520",
+          "buy_quote_volume": "39000.67"
+        },
+        {
+          "start_time": "2024-06-01T02:15:00Z",
+          "end_time": "2024-06-01T02:30:00Z",
+          "open": "3446.75",
+          "high": "3467.150",
+          "low": "3443.350",
+          "close": "3463.75",
+          "base_volume": "22.180",
+          "quote_volume": "76825.98",
+          "trade_count": 1533,
+          "buy_volume": "11.53360",
+          "buy_quote_volume": "39949.51"
+        },
+        {
+          "start_time": "2024-06-01T02:30:00Z",
+          "end_time": "2024-06-01T02:45:00Z",
+          "open": "3463.75",
+          "high": "3488.400",
+          "low": "3460.350",
+          "close": "3485.00",
+          "base_volume": "22.600",
+          "quote_volume": "78761.00",
+          "trade_count": 1570,
+          "buy_volume": "11.75200",
+          "buy_quote_volume": "40955.72"
+        },
+        {
+          "start_time": "2024-06-01T02:45:00Z",
+          "end_time": "2024-06-01T03:00:00Z",
+          "open": "3485.00",
+          "high": "3488.400",
+          "low": "3460.350",
+          "close": "3463.75",
+          "base_volume": "23.020",
+          "quote_volume": "79735.52",
+          "trade_count": 1607,
+          "buy_volume": "11.97040",
+          "buy_quote_volume": "41462.47"
+        },
+        {
+          "start_time": "2024-06-01T03:00:00Z",
+          "end_time": "2024-06-01T03:15:00Z",
+          "open": "3463.75",
+          "high": "3467.150",
+          "low": "3443.350",
+          "close": "3446.75",
+          "base_volume": "23.440",
+          "quote_volume": "80791.82",
+          "trade_count": 1644,
+          "buy_volume": "12.18880",
+          "buy_quote_volume": "42011.75"
+        },
+        {
+          "start_time": "2024-06-01T03:15:00Z",
+          "end_time": "2024-06-01T03:30:00Z",
+          "open": "3446.75",
+          "high": "3450.150",
+          "low": "3430.600",
+          "close": "3434.00",
+          "base_volume": "23.860",
+          "quote_volume": "81935.24",
+          "trade_count": 1681,
+          "buy_volume": "12.40720",
+          "buy_quote_volume": "42606.32"
+        },
+        {
+          "start_time": "2024-06-01T03:30:00Z",
+          "end_time": "2024-06-01T03:45:00Z",
+          "open": "3434.00",
+          "high": "3437.400",
+          "low": "3422.100",
+          "close": "3425.50",
+          "base_volume": "24.280",
+          "quote_volume": "83171.14",
+          "trade_count": 1718,
+          "buy_volume": "12.62560",
+          "buy_quote_volume": "43248.99"
+        },
+        {
+          "start_time": "2024-06-01T03:45:00Z",
+          "end_time": "2024-06-01T04:00:00Z",
+          "open": "3425.50",
+          "high": "3428.900",
+          "low": "3417.850",
+          "close": "3421.25",
+          "base_volume": "24.700",
+          "quote_volume": "84504.88",
+          "trade_count": 1755,
+          "buy_volume": "12.84400",
+          "buy_quote_volume": "43942.54"
+        },
+        {
+          "start_time": "2024-06-01T04:00:00Z",
+          "end_time": "2024-06-01T04:15:00Z",
+          "open": "3421.25",
+          "high": "3424.650",
+          "low": "3417.850",
+          "close": "3421.25",
+          "base_volume": "25.120",
+          "quote_volume": "85941.80",
+          "trade_count": 1792,
+          "buy_volume": "13.06240",
+          "buy_quote_volume": "44689.74"
+        },
+        {
+          "start_time": "2024-06-01T04:15:00Z",
+          "end_time": "2024-06-01T04:30:00Z",
+          "open": "3421.25",
+          "high": "3428.900",
+          "low": "3417.850",
+          "close": "3425.50",
+          "base_volume": "25.540",
+          "quote_volume": "87487.27",
+          "trade_count": 1829,
+          "buy_volume": "13.28080",
+          "buy_quote_volume": "45493.38"
+        },
+        {
+          "start_time": "2024-06-01T04:30:00Z",
+          "end_time": "2024-06-01T04:45:00Z",
+          "open": "3425.50",
+          "high": "3437.400",
+          "low": "3422.100",
+          "close": "3434.00",
+          "base_volume": "25.960",
+          "quote_volume": "89146.64",
+          "trade_count": 1866,
+          "buy_volume": "13.49920",
+          "buy_quote_volume": "46356.25"
+        },
+        {
+          "start_time": "2024-06-01T04:45:00Z",
+          "end_time": "2024-06-01T05:00:00Z",
+          "open": "3434.00",
+          "high": "3450.150",
+          "low": "3430.600",
+          "close": "3446.75",
+          "base_volume": "26.380",
+          "quote_volume": "90925.26",
+          "trade_count": 1903,
+          "buy_volume": "13.71760",
+          "buy_quote_volume": "47281.14"
+        },
+        {
+          "start_time": "2024-06-01T05:00:00Z",
+          "end_time": "2024-06-01T05:15:00Z",
+          "open": "3446.75",
+          "high": "3467.150",
+          "low": "3443.350",
+          "close": "3463.75",
+          "base_volume": "26.800",
+          "quote_volume": "92828.50",
+          "trade_count": 1940,
+          "buy_volume": "13.93600",
+          "buy_quote_volume": "48270.82"
+        },
+        {
+          "start_time": "2024-06-01T05:15:00Z",
+          "end_time": "2024-06-01T05:30:00Z",
+          "open": "3463.75",
+          "high": "3488.400",
+          "low": "3460.350",
+          "close": "3485.00",
+          "base_volume": "27.220",
+          "quote_volume": "94861.70",
+          "trade_count": 1977,
+          "buy_volume": "14.15440",
+          "buy_quote_volume": "49328.08"
+        },
+        {
+          "start_time": "2024-06-01T05:30:00Z",
+          "end_time": "2024-06-01T05:45:00Z",
+          "open": "3485.00",
+          "high": "3488.400",
+          "low": "3460.350",
+          "close": "3463.75",
+          "base_volume": "27.640",
+          "quote_volume": "95738.05",
+          "trade_count": 2014,
+          "buy_volume": "14.37280",
+          "buy_quote_volume": "49783.79"
+        },
+        {
+          "start_time": "2024-06-01T05:45:00Z",
+          "end_time": "2024-06-01T06:00:00Z",
+          "open": "3463.75",
+          "high": "3467.150",
+          "low": "3443.350",
+          "close": "3446.75",
+          "base_volume": "28.060",
+          "quote_volume": "96715.80",
+          "trade_count": 2051,
+          "buy_volume": "14.59120",
+          "buy_quote_volume": "50292.22"
+        },
+        {
+          "start_time": "2024-06-01T06:00:00Z",
+          "end_time": "2024-06-01T06:15:00Z",
+          "open": "3446.75",
+          "high": "3450.150",
+          "low": "3430.600",
+          "close": "3434.00",
+          "base_volume": "28.480",
+          "quote_volume": "97800.32",
+          "trade_count": 2088,
+          "buy_volume": "14.80960",
+          "buy_quote_volume": "50856.17"
+        },
+        {
+          "start_time": "2024-06-01T06:15:00Z",
+          "end_time": "2024-06-01T06:30:00Z",
+          "open": "3434.00",
+          "high": "3437.400",
+          "low": "3422.100",
+          "close": "3425.50",
+          "base_volume": "28.900",
+          "quote_volume": "98996.95",
+          "trade_count": 2125,
+          "buy_volume": "15.02800",
+          "buy_quote_volume": "51478.41"
+        },
+        {
+          "start_time": "2024-06-01T06:30:00Z",
+          "end_time": "2024-06-01T06:45:00Z",
+          "open": "3425.50",
+          "high": "3428.900",
+          "low": "3417.850",
+          "close": "3421.25",
+          "base_volume": "29.320",
+          "quote_volume": "100311.05",
+          "trade_count": 2162,
+          "buy_volume": "15.24640",
+          "buy_quote_volume": "52161.75"
+        },
+        {
+          "start_time": "2024-06-01T06:45:00Z",
+          "end_time": "2024-06-01T07:00:00Z",
+          "open": "3421.25",
+          "high": "3424.650",
+          "low": "3417.850",
+          "close": "3421.25",
+          "base_volume": "29.740",
+          "quote_volume": "101747.98",
+          "trade_count": 2199,
+          "buy_volume": "15.46480",
+          "buy_quote_volume": "52908.95"
+        },
+        {
+          "start_time": "2024-06-01T07:00:00Z",
+          "end_time": "2024-06-01T07:15:00Z",
+          "open": "3421.25",
+          "high": "3428.900",
+          "low": "3417.850",
+          "close": "3425.50",
+          "base_volume": "30.160",
+          "quote_volume": "103313.08",
+          "trade_count": 2236,
+          "buy_volume": "15.68320",
+          "buy_quote_volume": "53722.80"
+        },
+        {
+          "start_time": "2024-06-01T07:15:00Z",
+          "end_time": "2024-06-01T07:30:00Z",
+          "open": "3425.50",
+          "high": "3437.400",
+          "low": "3422.100",
+          "close": "3434.00",
+          "base_volume": "30.580",
+          "quote_volume": "105011.72",
+          "trade_count": 2273,
+          "buy_volume": "15.90160",
+          "buy_quote_volume": "54606.09"
+        },
+        {
+          "start_time": "2024-06-01T07:30:00Z",
+          "end_time": "2024-06-01T07:45:00Z",
+          "open": "3434.00",
+          "high": "3450.150",
+          "low": "3430.600",
+          "close": "3446.75",
+          "base_volume": "31.000",
+          "quote_volume": "106849.25",
+          "trade_count": 2310,
+          "buy_volume": "16.12000",
+          "buy_quote_volume": "55561.61"
+        },
+        {
+          "start_time": "2024-06-01T07:45:00Z",
+          "end_time": "2024-06-01T08:00:00Z",
+          "open": "3446.75",
+          "high": "3467.150",
+          "low": "3443.350",
+          "close": "3463.75",
+          "base_volume": "31.420",
+          "quote_volume": "108831.02",
+          "trade_count": 2347,
+          "buy_volume": "16.33840",
+          "buy_quote_volume": "56592.13"
+        }
+      ]
+    }
+  ]
+}

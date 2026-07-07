@@ -23,7 +23,7 @@
       "Mock resources are stored under a dedicated resources directory.",
       "The mock data can be loaded without code changes."
     ],
-    "status": "Pending"
+    "status": "Done"
   },
   {
     "id": 3,
