@@ -1,22 +1,32 @@
 ---
 feature:
-  id: 3
-  slug: market-data-provider
-workflow_stage: Completed
-status: Done
+  id: 4
+  slug: analysis-classification-pipeline
+workflow_stage: Waiting for Specification Approval
+status: In Progress
 blocked_from_stage: null
 started: 2026-07-08
 updated: 2026-07-08
 approval:
-  specification: approved
-  recorded_by: human
-  recorded_at: 2026-07-08T14:53:00
+  specification: pending
+  recorded_by: null
+  recorded_at: null
   notes: null
-plan: []
+plan:
+  - Specification completed — awaiting human approval
+  - On approval → Implementation (Implementer)
+  - On rejection → Specification (Spec Writer revision)
 ---
 
 # Current Progress
 
-**Feature:** market-data-provider — **Completed**
+**Feature:** analysis-classification-pipeline (Analysis to Classification Pipeline)
 
-Code review approved. Feature archived to `work/history/market-data-provider.md`.
+**Stage:** Waiting for Specification Approval
+
+Specification artifacts are ready under `specs/analysis-classification-pipeline/`.
+
+**Action required:** Review the specification and issue one of:
+
+- `Approve specification`
+- `Reject specification: <reason>`

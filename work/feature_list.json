@@ -49,7 +49,7 @@
       "The classifier module receives only mapped DTOs.",
       "No direct coupling exists between analysis internals and the classifier."
     ],
-    "status": "Pending"
+    "status": "In Progress"
   },
   {
     "id": 5,
