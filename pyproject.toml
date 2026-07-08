@@ -21,6 +21,7 @@ packages = [
     "market_data_be",
     "market_data_be.application",
     "market_data_be.application.contracts",
+    "market_data_be.application.models",
     "market_data_be.application.mappers",
     "market_data_be.application.tests",
     "market_data_be.application.use_cases",

@@ -1,18 +1,20 @@
-from market_data_be.application.models.assessment import Assessment
-from market_data_be.application.models.classification import Classification
-from market_data_be.application.models.classification.inputs import (
-    EconomicClassifierInput,
-    ExposureClassifierInput,
-    RegimeClassifierInput,
-    RegimeLabel,
-    RiskClassifierInput,
-)
-from market_data_be.application.models.assessment import (
+from market_data_be.modules.analysis.models.assessments import (
     EconomicAssessment,
     ExposureProfile,
     RegimeAssessment,
     RiskAssessment,
 )
+from market_data_be.modules.classification.models.inputs.economic import (
+    EconomicClassifierInput,
+)
+from market_data_be.modules.classification.models.inputs.exposure import (
+    ExposureClassifierInput,
+)
+from market_data_be.modules.classification.models.inputs.regime import (
+    RegimeClassifierInput,
+    RegimeLabel,
+)
+from market_data_be.modules.classification.models.inputs.risk import RiskClassifierInput
 
 
 def to_regime_classifier_input(assessment: RegimeAssessment) -> RegimeClassifierInput:

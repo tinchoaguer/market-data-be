@@ -2,31 +2,21 @@
 feature:
   id: 4
   slug: analysis-classification-pipeline
-workflow_stage: Waiting for Specification Approval
-status: In Progress
+workflow_stage: Completed
+status: Done
 blocked_from_stage: null
 started: 2026-07-08
 updated: 2026-07-08
 approval:
-  specification: pending
-  recorded_by: null
-  recorded_at: null
+  specification: approved
+  recorded_by: human
+  recorded_at: 2026-07-08T15:24:00
   notes: null
-plan:
-  - Specification completed — awaiting human approval
-  - On approval → Implementation (Implementer)
-  - On rejection → Specification (Spec Writer revision)
+plan: []
 ---
 
 # Current Progress
 
-**Feature:** analysis-classification-pipeline (Analysis to Classification Pipeline)
+**Feature:** analysis-classification-pipeline — **Completed**
 
-**Stage:** Waiting for Specification Approval
-
-Specification artifacts are ready under `specs/analysis-classification-pipeline/`.
-
-**Action required:** Review the specification and issue one of:
-
-- `Approve specification`
-- `Reject specification: <reason>`
+Code review approved. Feature archived to `work/history/analysis-classification-pipeline.md`.
