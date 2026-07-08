@@ -1,12 +1,12 @@
 import pytest
 
-from trading_engine.app.engine.analyzers.risk_engine import (
+from market_data_be.modules.analysis.analyzers.risk_engine import (
     INSUFFICIENT_DATA_SCORE,
     MIN_KLINES,
     RiskEngine,
 )
-from trading_engine.app.engine.models import MarketRegime, RegimeAssessment
-from trading_engine.app.engine.tests.fixtures import _candle, _market_data, _order_book
+from market_data_be.modules.analysis.models import MarketRegime, RegimeAssessment
+from market_data_be.modules.analysis.tests.fixtures import _candle, _market_data, _order_book
 
 
 def _flat_series(count: int = 35, base_volume: float = 100.0):

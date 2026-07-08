@@ -1,18 +1,18 @@
 from dataclasses import replace
 
-from trading_engine.app.engine.analyzers.portfolio_manager import PortfolioManager
-from trading_engine.app.engine.models import (
+from market_data_be.modules.analysis.analyzers.portfolio_manager import PortfolioManager
+from market_data_be.modules.analysis.models import (
     EconomicAssessment,
     MarketRegime,
     RegimeAssessment,
     RiskAssessment,
     StrategyType,
 )
-from trading_engine.app.engine.synthesis.catalog_builder import (
+from market_data_be.modules.analysis.synthesis.catalog_builder import (
     HIGH_RISK_GATE,
     CatalogBuilder,
 )
-from trading_engine.app.engine.tests.fixtures import _candle, _market_data, _order_book, _portfolio_state
+from market_data_be.modules.analysis.tests.fixtures import _candle, _market_data, _order_book, _portfolio_state
 
 
 def _market_data_series(count: int = 35, price: float = 100.0):

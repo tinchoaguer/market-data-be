@@ -1,11 +1,11 @@
 import pytest
 
-from trading_engine.app.engine.analyzers.portfolio_manager import (
+from market_data_be.modules.analysis.analyzers.portfolio_manager import (
     MIN_KLINES,
     PortfolioManager,
 )
-from trading_engine.app.engine.models import PortfolioConstraints
-from trading_engine.app.engine.tests.fixtures import (
+from market_data_be.modules.analysis.models import PortfolioConstraints
+from market_data_be.modules.analysis.tests.fixtures import (
     _candle,
     _market_data,
     _order_book,

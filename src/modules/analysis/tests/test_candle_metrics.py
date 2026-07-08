@@ -1,6 +1,6 @@
 import pytest
 
-from trading_engine.app.engine.analyzers.candle_metrics import (
+from market_data_be.modules.analysis.analyzers.candle_metrics import (
     atr,
     book_top_depth_base,
     close_n_bars_ago,
@@ -17,7 +17,7 @@ from trading_engine.app.engine.analyzers.candle_metrics import (
     true_range,
     wilder_di_adx,
 )
-from trading_engine.app.engine.tests.fixtures import _candle, _order_book
+from market_data_be.modules.analysis.tests.fixtures import _candle, _order_book
 
 
 def test_latest_close_and_close_n_bars_ago():

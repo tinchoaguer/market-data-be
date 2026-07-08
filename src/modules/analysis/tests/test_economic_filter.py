@@ -1,9 +1,9 @@
-from trading_engine.app.engine.analyzers.economic_filter import (
+from market_data_be.modules.analysis.analyzers.economic_filter import (
     INSUFFICIENT_DATA_EDGE,
     MIN_KLINES,
     EconomicFilter,
 )
-from trading_engine.app.engine.tests.fixtures import _candle, _market_data, _order_book
+from market_data_be.modules.analysis.tests.fixtures import _candle, _market_data, _order_book
 
 
 def _range_friendly_series(count: int = 35):

@@ -36,8 +36,8 @@
       "Application and domain logic depend only on the MarketDataProvider port.",
       "New adapters can be added or substituted without modifying application or domain code."
     ],
-    "status": "Pending"
-  }
+    "status": "Done"
+  },
   {
     "id": 4,
     "slug": "analysis-classification-pipeline",

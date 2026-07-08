@@ -1,6 +1,6 @@
-from trading_engine.app.engine.analyzers.regime_detector import MIN_KLINES, RegimeDetector
-from trading_engine.app.engine.models import MarketRegime
-from trading_engine.app.engine.tests.fixtures import _candle, _market_data
+from market_data_be.modules.analysis.analyzers.regime_detector import MIN_KLINES, RegimeDetector
+from market_data_be.modules.analysis.models import MarketRegime
+from market_data_be.modules.analysis.tests.fixtures import _candle, _market_data
 
 
 def _flat_range_series(count: int = 35):

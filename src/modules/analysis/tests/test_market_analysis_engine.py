@@ -1,6 +1,6 @@
-from trading_engine.app.engine.market_analysis_engine import MarketAnalysisEngine
-from trading_engine.app.engine.models import MarketRegime, StrategyType
-from trading_engine.app.engine.tests.fixtures import _candle, _market_data, _portfolio_state
+from market_data_be.modules.analysis.market_analysis_engine import MarketAnalysisEngine
+from market_data_be.modules.analysis.models import MarketRegime, StrategyType
+from market_data_be.modules.analysis.tests.fixtures import _candle, _market_data, _portfolio_state
 
 
 def _flat_series(count: int = 35):

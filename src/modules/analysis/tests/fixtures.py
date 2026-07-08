@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 from decimal import Decimal
 
-from trading_engine.app.engine.models import (
+from market_data_be.modules.analysis.models import (
     Candle,
     CandleSeries,
     MarketData,
