@@ -6,36 +6,10 @@ from datetime import datetime
 from decimal import Decimal
 import json
 from pathlib import Path
-import sys
-import types
 
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-
-def _ensure_market_data_be_packages() -> None:
-    """Register setuptools package-dir mappings for sibling src layout."""
-    src = PROJECT_ROOT / "src"
-    if "market_data_be.modules" not in sys.modules:
-        modules_pkg = types.ModuleType("market_data_be.modules")
-        modules_pkg.__path__ = [str(src / "modules")]
-        sys.modules["market_data_be.modules"] = modules_pkg
-    if "market_data_be.modules.analysis" not in sys.modules:
-        analysis_pkg = types.ModuleType("market_data_be.modules.analysis")
-        analysis_pkg.__path__ = [str(src / "modules" / "analysis")]
-        sys.modules["market_data_be.modules.analysis"] = analysis_pkg
-    if "market_data_be.infrastructure" not in sys.modules:
-        infrastructure_pkg = types.ModuleType("market_data_be.infrastructure")
-        infrastructure_pkg.__path__ = [str(src / "infrastructure")]
-        sys.modules["market_data_be.infrastructure"] = infrastructure_pkg
-    if "market_data_be.infrastructure.market_data" not in sys.modules:
-        market_data_pkg = types.ModuleType("market_data_be.infrastructure.market_data")
-        market_data_pkg.__path__ = [str(src / "infrastructure" / "market_data")]
-        sys.modules["market_data_be.infrastructure.market_data"] = market_data_pkg
-
-
-_ensure_market_data_be_packages()
 
 from market_data_be.infrastructure.market_data.deserializer import market_data_from_dict
 from market_data_be.modules.analysis.models import (

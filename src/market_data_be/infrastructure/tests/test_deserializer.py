@@ -14,7 +14,7 @@ from market_data_be.modules.analysis.models import (
     Timeframe,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 FIXTURES_DIR = PROJECT_ROOT / "resources" / "market_data"
 
 

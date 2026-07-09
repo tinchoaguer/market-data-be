@@ -7,7 +7,7 @@ from .deserializer import market_data_from_dict
 from .errors import MarketDataDeserializationError, MarketDataNotFoundError
 from .symbol_resolver import symbol_to_fixture_filename
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[3]
+_PROJECT_ROOT = Path(__file__).resolve().parents[4]
 _DEFAULT_FIXTURES_DIR = _PROJECT_ROOT / "resources" / "market_data"
 
 

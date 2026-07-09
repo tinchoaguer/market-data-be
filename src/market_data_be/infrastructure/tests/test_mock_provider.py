@@ -9,7 +9,7 @@ from market_data_be.infrastructure.market_data.errors import (
 )
 from market_data_be.infrastructure.market_data.mock_provider import MockMarketDataProvider
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_FIXTURES_DIR = PROJECT_ROOT / "resources" / "market_data"
 
 
