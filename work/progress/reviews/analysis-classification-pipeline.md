@@ -41,8 +41,10 @@ pytest src/ — 81 passed
 |-----------|-------|
 | `ClassifyMarket` | Application (use case) |
 | `assessment_to_classification` | Application (mapper) |
-| `MarketClassification` | Application (output model) |
-| `MarketAnalysisEngine` | Domain (analysis) |
-| Classifiers | Domain (classification) |
+| `ClassificationResult` | Domain (classification output) |
+| `MarketClassificationEngine` | Domain (classification facade) |
+| `MarketAnalysisEngine` | Domain (analysis facade) |
 
 No cross-imports between analysis and classification domain modules.
+
+> **Updated 2026-07-09** after facade refactor. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).

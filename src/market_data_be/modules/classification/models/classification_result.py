@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from market_data_be.modules.classification.models.signal import ClassificationSignal
+from .signal import ClassificationSignal
 
 
 @dataclass(frozen=True, slots=True)
-class MarketClassification:
+class ClassificationResult:
     symbol: str
     regime: tuple[ClassificationSignal, ...]
     risk: tuple[ClassificationSignal, ...]

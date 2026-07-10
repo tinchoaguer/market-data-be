@@ -15,13 +15,15 @@ Port-based market data retrieval layer with `MarketDataProvider` contract, `Mock
 
 ## Deliverables
 
-- `src/application/contracts/market_data_provider.py` — `MarketDataProvider` Protocol
-- `src/infrastructure/market_data/mock_provider.py` — `MockMarketDataProvider` adapter
-- `src/infrastructure/market_data/deserializer.py` — shared JSON → `MarketData` mapping
-- `src/infrastructure/market_data/symbol_resolver.py` — symbol → filename resolution
-- `src/infrastructure/market_data/errors.py` — `MarketDataNotFoundError`, `MarketDataDeserializationError`
-- `src/application/use_cases/get_market_data.py` — port-injected use case
-- Unit tests in `src/infrastructure/tests/` and `src/application/tests/`
+- `src/market_data_be/application/contracts/market_data_provider.py` — `MarketDataProvider` Protocol
+- `src/market_data_be/infrastructure/market_data/mock_provider.py` — `MockMarketDataProvider` adapter
+- `src/market_data_be/infrastructure/market_data/deserializer.py` — shared JSON → `MarketData` mapping
+- `src/market_data_be/infrastructure/market_data/symbol_resolver.py` — symbol → filename resolution
+- `src/market_data_be/infrastructure/market_data/errors.py` — `MarketDataNotFoundError`, `MarketDataDeserializationError`
+- `src/market_data_be/application/use_cases/get_market_data.py` — port-injected use case
+- Unit tests in `src/market_data_be/infrastructure/tests/` and `src/market_data_be/application/tests/`
+
+> **2026-07-09:** Code moved under `src/market_data_be/`. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
 
 ## Review
 

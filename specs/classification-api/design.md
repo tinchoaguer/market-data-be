@@ -1,5 +1,22 @@
 # Design
 
+## Amendments (2026-07-09)
+
+> Supersedes outdated paths and types in this document. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md) and [architecture.md](../../knowledge/architecture.md).
+
+| Spec reference | Current code |
+|----------------|--------------|
+| `src/application/`, `src/modules/`, `src/infrastructure/` | `src/market_data_be/application/`, `.../modules/`, `.../infrastructure/` |
+| `MarketClassification` (application output) | `ClassificationResult` in `modules/classification/models/` |
+| Four classifiers injected into `ClassifyMarket` | `MarketClassificationEngine` facade injected into `ClassifyMarket` |
+| `application/models/market_classification.py` | **Removed** — output owned by classification domain |
+
+**Current pipeline:** `ClassifyMarket` → `MarketAnalysisEngine.analyze()` → `to_classification_inputs()` → `MarketClassificationEngine.classify()` → `ClassificationResult`.
+
+HTTP feature maps `ClassificationResult` → `MarketClassificationResponse` (DTO name unchanged).
+
+---
+
 ## Overview
 
 Add a classification HTTP route under `src/infrastructure/http/` that accepts a hyphen-separated market symbol URL path parameter, validates and converts it to the internal slash-separated format, invokes the existing `ClassifyMarket` use case, maps `MarketClassification` to Pydantic response DTOs, and translates infrastructure errors into HTTP status codes. Introduce a small composition module that wires default development dependencies (`MockMarketDataProvider`, real `MarketAnalysisEngine`, real classifiers) and register the route in `create_app()`. Domain and application layers are consumers only; no behavioral changes to the classification pipeline.

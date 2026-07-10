@@ -46,3 +46,5 @@ pytest src/ — 90 passed
 | `GET /markets/BTC%2FUSDT/classification` | 422 |
 
 Response `symbol` uses slash format (`BTC/USDT`).
+
+> **Note (2026-07-09):** HTTP mapper input type is now `ClassificationResult` (domain). Paths under `src/market_data_be/`. See [ADR-0001](../../../knowledge/adr/0001-package-layout-and-domain-facades.md).

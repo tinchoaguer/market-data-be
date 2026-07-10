@@ -1,5 +1,11 @@
 # Design
 
+## Amendments (2026-07-09)
+
+> All `src/application/`, `src/infrastructure/`, `src/modules/` paths → `src/market_data_be/...`. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+
+---
+
 ## Overview
 
 Add an application-layer `MarketDataProvider` Protocol, a shared infrastructure JSON deserializer, and a `MockMarketDataProvider` adapter that reads static fixtures from `resources/market_data/`. A thin application use case (`GetMarketData`) demonstrates constructor injection of the port. Domain modules are unchanged; they receive `MarketData` as input from orchestration code, never from infrastructure directly.

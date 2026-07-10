@@ -1,5 +1,16 @@
 # Requirements
 
+## Amendments (2026-07-09)
+
+> See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+
+- Paths `src/infrastructure/`, `src/application/`, `src/modules/` → prefix with `src/market_data_be/`.
+- Domain pipeline output is `ClassificationResult`, not application `MarketClassification`.
+- `ClassifyMarket` returns `ClassificationResult`; HTTP mapper converts it to `MarketClassificationResponse`.
+- Composition wires `MarketClassificationEngine()`, not four individual classifiers.
+
+---
+
 ## Overview
 
 Expose market classification results over HTTP by adding a read-only REST endpoint to the existing FastAPI application. The endpoint accepts a trading-pair symbol as a hyphen-separated URL path parameter (for example, `BTC-USDT`), converts it to the internal slash-separated format (`BTC/USDT`), runs the existing `ClassifyMarket` application use case, and returns a JSON response built from infrastructure-layer DTOs. Domain types (`ClassificationSignal`, `MarketClassification`) and application orchestration logic remain unchanged; URL symbol parsing, HTTP serialization, and error mapping are infrastructure concerns only.

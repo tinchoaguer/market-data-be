@@ -1,5 +1,19 @@
 # Tasks
 
+## Amendments (2026-07-09)
+
+> Post-refactor follow-up (not part of original feature scope; completed 2026-07-09):
+
+- [x] Add `MarketClassificationEngine` facade and `ClassificationResult` / `ClassificationInputs` domain types
+- [x] Refactor `ClassifyMarket` to inject `MarketClassificationEngine` instead of four classifiers
+- [x] Add `to_classification_inputs()` to application mapper; remove `application/models/market_classification.py`
+- [x] Add `modules/classification/tests/test_market_classification_engine.py`
+- [x] Align package layout under `src/market_data_be/` (see ADR-0001)
+
+See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+
+---
+
 ## Implementation Tasks
 
 Tasks are ordered to minimize dependencies. Each task maps to one or more requirements.

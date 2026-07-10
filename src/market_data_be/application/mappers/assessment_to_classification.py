@@ -1,8 +1,12 @@
+from market_data_be.modules.analysis.models.analysis_result import AnalysisResult
 from market_data_be.modules.analysis.models.assessments import (
     EconomicAssessment,
     ExposureProfile,
     RegimeAssessment,
     RiskAssessment,
+)
+from market_data_be.modules.classification.models.classification_inputs import (
+    ClassificationInputs,
 )
 from market_data_be.modules.classification.models.inputs.economic import (
     EconomicClassifierInput,
@@ -31,3 +35,13 @@ def to_economic_classifier_input(assessment: EconomicAssessment) -> EconomicClas
 
 def to_exposure_classifier_input(profile: ExposureProfile) -> ExposureClassifierInput:
     return ExposureClassifierInput(available_capacity_pct=profile.available_capacity_pct)
+
+
+def to_classification_inputs(analysis: AnalysisResult) -> ClassificationInputs:
+    return ClassificationInputs(
+        symbol=analysis.symbol,
+        regime=to_regime_classifier_input(analysis.regime),
+        risk=to_risk_classifier_input(analysis.risk),
+        economic=to_economic_classifier_input(analysis.economic),
+        exposure=to_exposure_classifier_input(analysis.exposure),
+    )

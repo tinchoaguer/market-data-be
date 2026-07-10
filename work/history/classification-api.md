@@ -16,12 +16,14 @@ Exposed market classification results via REST API. URL uses hyphen-separated pa
 ## Deliverables
 
 - `GET /markets/{symbol}/classification` — classification endpoint
-- `src/infrastructure/http/validation/symbol.py` — `parse_url_symbol` (hyphen → slash)
-- `src/infrastructure/http/dtos/classification.py` — Pydantic response DTOs
-- `src/infrastructure/http/mappers/classification.py` — application → HTTP mapping
-- `src/infrastructure/http/composition.py` — `build_classify_market()` wiring
-- `src/infrastructure/http/routes/classification.py` — route handler
-- `src/infrastructure/tests/test_classification_route.py` — integration tests
+- `src/market_data_be/infrastructure/http/validation/symbol.py` — `parse_url_symbol` (hyphen → slash)
+- `src/market_data_be/infrastructure/http/dtos/classification.py` — Pydantic response DTOs
+- `src/market_data_be/infrastructure/http/mappers/classification.py` — `ClassificationResult` → HTTP mapping
+- `src/market_data_be/infrastructure/http/composition.py` — `build_classify_market()` wiring
+- `src/market_data_be/infrastructure/http/routes/classification.py` — route handler
+- `src/market_data_be/infrastructure/tests/test_classification_route.py` — integration tests
+
+> **2026-07-09:** Paths under `src/market_data_be/`; HTTP mapper input is `ClassificationResult`. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
 
 ## Review
 

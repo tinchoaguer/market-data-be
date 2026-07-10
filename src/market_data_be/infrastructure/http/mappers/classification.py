@@ -1,7 +1,9 @@
-from market_data_be.application.models.market_classification import MarketClassification
 from market_data_be.infrastructure.http.dtos.classification import (
     ClassificationSignalResponse,
     MarketClassificationResponse,
+)
+from market_data_be.modules.classification.models.classification_result import (
+    ClassificationResult,
 )
 from market_data_be.modules.classification.models.signal import ClassificationSignal
 
@@ -20,7 +22,7 @@ def _map_signals(
 
 
 def map_market_classification_to_response(
-    classification: MarketClassification,
+    classification: ClassificationResult,
 ) -> MarketClassificationResponse:
     return MarketClassificationResponse(
         symbol=classification.symbol,

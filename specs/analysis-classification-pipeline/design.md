@@ -1,5 +1,21 @@
 # Design
 
+## Amendments (2026-07-09)
+
+> Supersedes outdated paths and types. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+
+| Spec reference | Current code |
+|----------------|--------------|
+| `src/application/`, `src/modules/` | `src/market_data_be/application/`, `src/market_data_be/modules/` |
+| `MarketClassification` in `application/models/` | `ClassificationResult` in `modules/classification/models/` |
+| `ClassificationInputs` bundles mapper output | `to_classification_inputs(analysis)` in application mapper |
+| Four classifiers in `ClassifyMarket` | `MarketClassificationEngine` facade |
+| Individual classifier injection rationale | Facade mirrors `MarketAnalysisEngine`; classifiers are internal to classification module |
+
+**New classification module files:** `market_classification_engine.py`, `models/classification_inputs.py`, `models/classification_result.py`, `tests/test_market_classification_engine.py`.
+
+---
+
 ## Overview
 
 Add a `ClassifyMarket` application use case that wires together existing components: `MarketDataProvider` (feature 3), `MarketAnalysisEngine` (analysis domain), `assessment_to_classification` mapper (application layer, repaired imports), and the four classification domain classifiers. Introduce `MarketClassification` as the application-level output aggregating per-domain `ClassificationSignal` tuples. Domain modules are unchanged in behavior; only application orchestration and mapper corrections are in scope.

@@ -43,8 +43,8 @@ summary: >
 
 ### Recommendations (non-blocking)
 
-1. **pyproject.toml** — explicit package list works but requires manual updates when adding subpackages; consider setuptools `find` in future.
-2. **src/infrastructure/tests/** — missing `__init__.py` despite declared package; tests run via pytest discovery.
+1. ~~**pyproject.toml** — explicit package list~~ **Resolved (2026-07-09):** `packages.find` under `src/market_data_be/`; see [ADR-0001](../../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+2. **src/market_data_be/infrastructure/tests/** — missing `__init__.py` despite declared package; tests run via pytest discovery.
 
 ## Tests
 

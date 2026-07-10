@@ -15,11 +15,12 @@ Connected the deterministic analysis module with the classification module via a
 
 ## Deliverables
 
-- `src/application/models/market_classification.py` — `MarketClassification` output aggregate
-- `src/application/mappers/assessment_to_classification.py` — repaired domain-to-domain mapper
-- `src/application/use_cases/classify_market.py` — pipeline orchestration use case
-- `src/application/tests/test_assessment_to_classification.py` — mapper unit tests
-- `src/application/tests/test_classify_market.py` — use case unit + integration tests
+- `src/market_data_be/application/mappers/assessment_to_classification.py` — domain-to-domain mapper (+ `to_classification_inputs`)
+- `src/market_data_be/application/use_cases/classify_market.py` — pipeline orchestration use case
+- `src/market_data_be/application/tests/test_assessment_to_classification.py` — mapper unit tests
+- `src/market_data_be/application/tests/test_classify_market.py` — use case unit + integration tests
+
+> **2026-07-09 refactor:** `MarketClassification` moved to `ClassificationResult` in the classification domain. Added `MarketClassificationEngine` facade. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
 
 ## Review
 
@@ -33,18 +34,14 @@ All 17 requirements, 7 NFRs, and 8 acceptance criteria passed. 81/81 tests green
 from market_data_be.application.use_cases.classify_market import ClassifyMarket
 from market_data_be.infrastructure.market_data.mock_provider import MockMarketDataProvider
 from market_data_be.modules.analysis.market_analysis_engine import MarketAnalysisEngine
-from market_data_be.modules.classification.classifiers.regime import RegimeClassifier
-from market_data_be.modules.classification.classifiers.risk import RiskClassifier
-from market_data_be.modules.classification.classifiers.economic import EconomicClassifier
-from market_data_be.modules.classification.classifiers.exposure import ExposureClassifier
+from market_data_be.modules.classification.market_classification_engine import (
+    MarketClassificationEngine,
+)
 
 use_case = ClassifyMarket(
     provider=MockMarketDataProvider(),
     engine=MarketAnalysisEngine(),
-    regime_classifier=RegimeClassifier(),
-    risk_classifier=RiskClassifier(),
-    economic_classifier=EconomicClassifier(),
-    exposure_classifier=ExposureClassifier(),
+    classification_engine=MarketClassificationEngine(),
 )
-result = use_case.execute("BTC/USDT")
+result = use_case.execute("BTC/USDT")  # ClassificationResult
 ```
