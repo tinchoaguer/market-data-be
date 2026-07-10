@@ -29,10 +29,12 @@ Install from `../harness/agents/` to `~/.cursor/agents/`.
 
 ```
 market-data-be/
-    knowledge/       # project context
+    knowledge/       # project context (architecture, ADRs)
     work/            # backlog and progress
     specs/           # feature specifications
-    trading_engine/  # source code
+    src/
+        market_data_be/   # installable Python package
+    resources/       # static fixtures (outside package)
 ```
 
 ## Starting a feature

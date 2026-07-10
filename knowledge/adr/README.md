@@ -14,3 +14,9 @@ Each ADR should include:
 - **Consequences** — trade-offs and impact
 
 Reference ADRs from `specs/<slug>/design.md` when relevant.
+
+## Index
+
+| ADR | Title | Status |
+|-----|-------|--------|
+| [0001](0001-package-layout-and-domain-facades.md) | Package layout alignment and classification facade symmetry | accepted |

@@ -22,18 +22,15 @@ from market_data_be.modules.analysis.models.market import (
 )
 from market_data_be.modules.analysis.models.portfolio import PortfolioState
 from market_data_be.modules.analysis.models.strategy_catalog import CatalogResult
-from market_data_be.modules.classification.classifiers.economic import EconomicClassifier
-from market_data_be.modules.classification.classifiers.exposure import ExposureClassifier
-from market_data_be.modules.classification.classifiers.regime import RegimeClassifier
-from market_data_be.modules.classification.classifiers.risk import RiskClassifier
-from market_data_be.modules.classification.models.inputs.economic import (
-    EconomicClassifierInput,
+from market_data_be.modules.classification.market_classification_engine import (
+    MarketClassificationEngine,
 )
-from market_data_be.modules.classification.models.inputs.exposure import (
-    ExposureClassifierInput,
+from market_data_be.modules.classification.models.classification_inputs import (
+    ClassificationInputs,
 )
-from market_data_be.modules.classification.models.inputs.regime import RegimeClassifierInput
-from market_data_be.modules.classification.models.inputs.risk import RiskClassifierInput
+from market_data_be.modules.classification.models.classification_result import (
+    ClassificationResult,
+)
 from market_data_be.modules.classification.models.signal import ClassificationSignal
 
 
@@ -65,13 +62,14 @@ class StubMarketAnalysisEngine:
         return self._result
 
 
-class RecordingClassifier:
-    def __init__(self) -> None:
-        self.last_input: object | None = None
+class StubMarketClassificationEngine:
+    def __init__(self, result: ClassificationResult) -> None:
+        self._result = result
+        self.last_inputs: ClassificationInputs | None = None
 
-    def classify(self, assessment: object) -> tuple[ClassificationSignal, ...]:
-        self.last_input = assessment
-        return (ClassificationSignal(source="test", score=0.0, reason="stub"),)
+    def classify(self, inputs: ClassificationInputs) -> ClassificationResult:
+        self.last_inputs = inputs
+        return self._result
 
 
 def _sample_market_data(symbol: str = "BTC/USDT") -> MarketData:
@@ -115,22 +113,27 @@ def _sample_analysis_result(symbol: str = "BTC/USDT") -> AnalysisResult:
     )
 
 
+def _sample_classification_result(symbol: str = "BTC/USDT") -> ClassificationResult:
+    signal = ClassificationSignal(source="test", score=0.0, reason="stub")
+    return ClassificationResult(
+        symbol=symbol,
+        regime=(signal,),
+        risk=(signal,),
+        economic=(signal,),
+        exposure=(signal,),
+    )
+
+
 def _build_use_case(
     *,
     provider: FakeMarketDataProvider,
     engine: StubMarketAnalysisEngine,
-    regime_classifier: RecordingClassifier | None = None,
-    risk_classifier: RecordingClassifier | None = None,
-    economic_classifier: RecordingClassifier | None = None,
-    exposure_classifier: RecordingClassifier | None = None,
+    classification_engine: StubMarketClassificationEngine,
 ) -> ClassifyMarket:
     return ClassifyMarket(
         provider=provider,
         engine=engine,
-        regime_classifier=regime_classifier or RecordingClassifier(),
-        risk_classifier=risk_classifier or RecordingClassifier(),
-        economic_classifier=economic_classifier or RecordingClassifier(),
-        exposure_classifier=exposure_classifier or RecordingClassifier(),
+        classification_engine=classification_engine,
     )
 
 
@@ -138,7 +141,14 @@ def test_classify_market_retrieves_data_via_provider_when_market_data_omitted() 
     market_data = _sample_market_data()
     provider = FakeMarketDataProvider(market_data)
     engine = StubMarketAnalysisEngine(_sample_analysis_result())
-    use_case = _build_use_case(provider=provider, engine=engine)
+    classification_engine = StubMarketClassificationEngine(
+        _sample_classification_result()
+    )
+    use_case = _build_use_case(
+        provider=provider,
+        engine=engine,
+        classification_engine=classification_engine,
+    )
 
     result = use_case.execute("BTC/USDT")
 
@@ -151,7 +161,14 @@ def test_classify_market_skips_provider_when_market_data_supplied() -> None:
     market_data = _sample_market_data("ETH/USDT")
     provider = FakeMarketDataProvider(market_data)
     engine = StubMarketAnalysisEngine(_sample_analysis_result("ETH/USDT"))
-    use_case = _build_use_case(provider=provider, engine=engine)
+    classification_engine = StubMarketClassificationEngine(
+        _sample_classification_result("ETH/USDT")
+    )
+    use_case = _build_use_case(
+        provider=provider,
+        engine=engine,
+        classification_engine=classification_engine,
+    )
 
     result = use_case.execute("BTC/USDT", market_data=market_data)
 
@@ -165,50 +182,52 @@ def test_classify_market_forwards_portfolio_state_to_engine() -> None:
     portfolio_state = PortfolioState(total_value=25_000.0)
     provider = FakeMarketDataProvider(market_data)
     engine = StubMarketAnalysisEngine(_sample_analysis_result())
-    use_case = _build_use_case(provider=provider, engine=engine)
+    classification_engine = StubMarketClassificationEngine(
+        _sample_classification_result()
+    )
+    use_case = _build_use_case(
+        provider=provider,
+        engine=engine,
+        classification_engine=classification_engine,
+    )
 
     use_case.execute("BTC/USDT", portfolio_state=portfolio_state)
 
     assert engine.last_portfolio_state is portfolio_state
 
 
-def test_classify_market_passes_classifier_inputs_not_raw_assessments() -> None:
+def test_classify_market_maps_analysis_to_classification_inputs() -> None:
     market_data = _sample_market_data()
     provider = FakeMarketDataProvider(market_data)
-    engine = StubMarketAnalysisEngine(_sample_analysis_result())
-    regime_classifier = RecordingClassifier()
-    risk_classifier = RecordingClassifier()
-    economic_classifier = RecordingClassifier()
-    exposure_classifier = RecordingClassifier()
+    analysis = _sample_analysis_result()
+    engine = StubMarketAnalysisEngine(analysis)
+    classification_engine = StubMarketClassificationEngine(
+        _sample_classification_result()
+    )
     use_case = _build_use_case(
         provider=provider,
         engine=engine,
-        regime_classifier=regime_classifier,
-        risk_classifier=risk_classifier,
-        economic_classifier=economic_classifier,
-        exposure_classifier=exposure_classifier,
+        classification_engine=classification_engine,
     )
 
     use_case.execute("BTC/USDT", market_data=market_data)
 
-    assert isinstance(regime_classifier.last_input, RegimeClassifierInput)
-    assert isinstance(risk_classifier.last_input, RiskClassifierInput)
-    assert isinstance(economic_classifier.last_input, EconomicClassifierInput)
-    assert isinstance(exposure_classifier.last_input, ExposureClassifierInput)
-    assert not isinstance(regime_classifier.last_input, RegimeAssessment)
-    assert not isinstance(risk_classifier.last_input, RiskAssessment)
-    assert not isinstance(economic_classifier.last_input, EconomicAssessment)
-    assert not isinstance(exposure_classifier.last_input, ExposureProfile)
+    assert classification_engine.last_inputs is not None
+    assert classification_engine.last_inputs.symbol == analysis.symbol
+    assert classification_engine.last_inputs.regime.regime.value == analysis.regime.regime.value
+    assert classification_engine.last_inputs.risk.score == analysis.risk.score
+    assert classification_engine.last_inputs.economic.edge == analysis.economic.edge
+    assert (
+        classification_engine.last_inputs.exposure.available_capacity_pct
+        == analysis.exposure.available_capacity_pct
+    )
 
 
 def _integration_use_case() -> ClassifyMarket:
     return ClassifyMarket(
         provider=MockMarketDataProvider(),
         engine=MarketAnalysisEngine(),
-        regime_classifier=RegimeClassifier(),
-        risk_classifier=RiskClassifier(),
-        economic_classifier=EconomicClassifier(),
-        exposure_classifier=ExposureClassifier(),
+        classification_engine=MarketClassificationEngine(),
     )
 
 

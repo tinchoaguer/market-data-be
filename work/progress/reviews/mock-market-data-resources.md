@@ -24,7 +24,7 @@ AC-001 through AC-009: **pass**
 
 ### Recommendations (non-blocking)
 
-1. **resources/tests/test_market_data_fixtures.py** — test module bootstraps `market_data_be.modules` via `sys.modules`; may simplify once package install path is standardized.
+1. ~~**resources/tests/test_market_data_fixtures.py** — `sys.modules` bootstrap~~ **Resolved (2026-07-09):** package layout under `src/market_data_be/` + `pip install -e .`; see [ADR-0001](../../../knowledge/adr/0001-package-layout-and-domain-facades.md).
 
 ## Tests
 

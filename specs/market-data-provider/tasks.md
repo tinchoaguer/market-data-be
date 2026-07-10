@@ -1,5 +1,11 @@
 # Tasks
 
+## Amendments (2026-07-09)
+
+> Paths map to `src/market_data_be/...`. See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+
+---
+
 ## Implementation Tasks
 
 Tasks are ordered to minimize dependencies. Each task maps to one or more requirements.

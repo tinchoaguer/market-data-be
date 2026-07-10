@@ -1,5 +1,22 @@
 # Design
 
+## Amendments (2026-07-09)
+
+> Package layout decision finalized in [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+
+The bootstrap `package-dir` remapping approach was **replaced** by physical layout:
+
+```
+src/market_data_be/
+├── application/
+├── modules/
+└── infrastructure/
+```
+
+`pyproject.toml` now uses `[tool.setuptools.packages.find] where = ["src"]`. All paths in this spec map to `src/market_data_be/...`.
+
+---
+
 ## Overview
 
 Introduce a thin HTTP infrastructure layer under `src/infrastructure/http/` that owns the FastAPI application factory, route registration, and ASGI entry point. Update `pyproject.toml` to declare `fastapi` and `uvicorn` as runtime dependencies and to configure setuptools package discovery for the existing `src/` layout under the `market_data_be` namespace. The only API surface in this feature is `GET /health`, implemented without coupling to domain modules.

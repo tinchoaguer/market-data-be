@@ -1,5 +1,15 @@
 # Requirements
 
+## Amendments (2026-07-09)
+
+> See [ADR-0001](../../knowledge/adr/0001-package-layout-and-domain-facades.md).
+
+- REQ-013 / AC-006: aggregated output is `ClassificationResult` under `modules/classification/models/`, not `MarketClassification` under `application/models/`.
+- REQ-011 / AC-001: `ClassifyMarket` injects `MarketClassificationEngine`, not four classifier instances.
+- All `src/application/` and `src/modules/` paths → `src/market_data_be/...`.
+
+---
+
 ## Overview
 
 Connect the deterministic analysis module (`MarketAnalysisEngine`) with the classification module through an application-layer orchestration use case. Analysis produces domain assessments; the existing `assessment_to_classification` mapper translates those assessments into classification `*ClassifierInput` DTOs; classifiers consume only those DTOs and emit `ClassificationSignal` instances. The analysis and classification bounded contexts remain decoupled — neither imports the other.
