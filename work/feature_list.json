@@ -28,15 +28,15 @@
   {
     "id": 3,
     "slug": "market-data-provider",
-    "title": "Market Data Provider Abstraction",
-    "description": "Implement a market data service using the Provider (Adapter) pattern capable of serving market data independently of its source.",
+    "title": "Market Data Provider",
+    "description": "Define a MarketDataProvider port and adapter implementations that allow the application to retrieve MarketData independently of the underlying data source.",
     "acceptance": [
-      "A provider interface abstracts the market data source.",
-      "A mock provider loads MarketData objects from JSON resources.",
-      "The application depends only on the provider abstraction.",
-      "Additional providers can be introduced without modifying the application logic."
+      "A MarketDataProvider port defines the contract for retrieving MarketData.",
+      "A MockMarketDataProvider adapter loads MarketData objects from JSON resources.",
+      "Application and domain logic depend only on the MarketDataProvider port.",
+      "New adapters can be added or substituted without modifying application or domain code."
     ],
-    "status": "Pending"
+    "status": "Done"
   },
   {
     "id": 4,
@@ -49,7 +49,7 @@
       "The classifier module receives only mapped DTOs.",
       "No direct coupling exists between analysis internals and the classifier."
     ],
-    "status": "Pending"
+    "status": "Done"
   },
   {
     "id": 5,
@@ -62,6 +62,6 @@
       "HTTP responses use API DTOs rather than domain models.",
       "Invalid requests return appropriate HTTP status codes."
     ],
-    "status": "Pending"
+    "status": "Done"
   }
 ]
