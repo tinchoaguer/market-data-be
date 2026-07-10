@@ -63,5 +63,18 @@
       "Invalid requests return appropriate HTTP status codes."
     ],
     "status": "Done"
+  },
+  {
+    "id": 6,
+    "slug": "market-data-api",
+    "title": "Market Data API",
+    "description": "Expose market data through a REST API endpoint using DTOs instead of domain objects.",
+    "acceptance": [
+      "The API accepts a market symbol as input.",
+      "The endpoint returns the current market data DTO.",
+      "HTTP responses use API DTOs rather than domain models.",
+      "Invalid requests return appropriate HTTP status codes."
+    ],
+    "status": "Done"
   }
 ]
