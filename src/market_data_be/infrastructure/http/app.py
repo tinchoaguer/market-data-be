@@ -13,8 +13,12 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from market_data_be.infrastructure.http.composition import (
+    build_analyze_market,
     build_classify_market,
     build_get_market_data,
+)
+from market_data_be.infrastructure.http.routes.analysis import (
+    router as analysis_router,
 )
 from market_data_be.infrastructure.http.routes.classification import (
     router as classification_router,
@@ -36,9 +40,11 @@ def create_app() -> FastAPI:
     application = FastAPI(title=APP_TITLE, version=APP_VERSION)
     application.state.classify_market = build_classify_market()
     application.state.get_market_data = build_get_market_data()
+    application.state.analyze_market = build_analyze_market()
     application.include_router(health_router)
     application.include_router(classification_router)
     application.include_router(market_data_router)
+    application.include_router(analysis_router)
 
     @application.exception_handler(MarketDataNotFoundError)
     async def market_data_not_found_handler(

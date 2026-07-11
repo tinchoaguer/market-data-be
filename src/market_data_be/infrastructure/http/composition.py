@@ -1,3 +1,4 @@
+from market_data_be.application.use_cases.analyze_market import AnalyzeMarket
 from market_data_be.application.use_cases.classify_market import ClassifyMarket
 from market_data_be.application.use_cases.get_market_data import GetMarketData
 from market_data_be.infrastructure.market_data.mock_provider import MockMarketDataProvider
@@ -18,4 +19,11 @@ def build_classify_market() -> ClassifyMarket:
 def build_get_market_data() -> GetMarketData:
     return GetMarketData(
         provider=MockMarketDataProvider(),
+    )
+
+
+def build_analyze_market() -> AnalyzeMarket:
+    return AnalyzeMarket(
+        provider=MockMarketDataProvider(),
+        engine=MarketAnalysisEngine(),
     )
