@@ -12,11 +12,17 @@ Factory alternative::
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from market_data_be.infrastructure.http.composition import build_classify_market
+from market_data_be.infrastructure.http.composition import (
+    build_classify_market,
+    build_get_market_data,
+)
 from market_data_be.infrastructure.http.routes.classification import (
     router as classification_router,
 )
 from market_data_be.infrastructure.http.routes.health import router as health_router
+from market_data_be.infrastructure.http.routes.market_data import (
+    router as market_data_router,
+)
 from market_data_be.infrastructure.market_data.errors import (
     MarketDataDeserializationError,
     MarketDataNotFoundError,
@@ -29,8 +35,10 @@ APP_VERSION = "5.5.0"
 def create_app() -> FastAPI:
     application = FastAPI(title=APP_TITLE, version=APP_VERSION)
     application.state.classify_market = build_classify_market()
+    application.state.get_market_data = build_get_market_data()
     application.include_router(health_router)
     application.include_router(classification_router)
+    application.include_router(market_data_router)
 
     @application.exception_handler(MarketDataNotFoundError)
     async def market_data_not_found_handler(
