@@ -88,6 +88,6 @@
       "HTTP responses use API DTOs rather than domain models.",
       "Invalid requests return appropriate HTTP status codes."
     ],
-    "status": "Pending"
+    "status": "Done"
   }
 ]
