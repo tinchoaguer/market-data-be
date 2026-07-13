@@ -10,6 +10,7 @@ Factory alternative::
 """
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from market_data_be.infrastructure.http.composition import (
@@ -36,8 +37,22 @@ APP_TITLE = "Market Data backend"
 APP_VERSION = "5.5.0"
 
 
+# Local Vite origins; FE calls the API cross-origin via VITE_API_BASE_URL.
+_LOCAL_FRONTEND_ORIGINS = (
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+)
+
+
 def create_app() -> FastAPI:
     application = FastAPI(title=APP_TITLE, version=APP_VERSION)
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(_LOCAL_FRONTEND_ORIGINS),
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     application.state.classify_market = build_classify_market()
     application.state.get_market_data = build_get_market_data()
     application.state.analyze_market = build_analyze_market()
