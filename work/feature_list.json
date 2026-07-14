@@ -89,5 +89,32 @@
       "Invalid requests return appropriate HTTP status codes."
     ],
     "status": "Done"
+  },
+  {
+    "id": 8,
+    "slug": "classification-reason-codes",
+    "title": "Classification Reason Codes in OpenAPI",
+    "description": "Declare the closed set of classification signal reason codes on HTTP response DTOs so OpenAPI exposes them as the FE source of truth for mapping codes to human-readable text.",
+    "acceptance": [
+      "Classification signal reason values are typed as a closed set on HTTP response DTOs (Literal or Enum), not as unconstrained strings.",
+      "The OpenAPI schema for the classification endpoint documents the allowed reason codes as enum values.",
+      "Classifiers emit only reason codes that belong to the declared DTO contract.",
+      "The HTTP DTO remains the public contract surface; clients can derive reason codes from OpenAPI without reading domain code."
+    ],
+    "status": "Done"
+  },
+  {
+    "id": 9,
+    "slug": "analysis-reason-codes",
+    "title": "Analysis Regime and Reason Codes in OpenAPI",
+    "description": "Declare closed sets for analysis regime labels and regime reason codes on HTTP response DTOs so OpenAPI exposes them as the FE source of truth for mapping codes to human-readable text.",
+    "acceptance": [
+      "RegimeAssessmentResponse.regime is typed as a closed set on the HTTP DTO (Literal or Enum), not as an unconstrained string.",
+      "RegimeAssessmentResponse.reasons items are typed as a closed set of reason codes on the HTTP DTO (Literal or Enum), matching codes emitted by RegimeDetector.",
+      "The OpenAPI schema for the analysis endpoint documents allowed regime and reason values as enum values.",
+      "RegimeDetector emits only reason codes that belong to the declared DTO contract.",
+      "The HTTP DTO remains the public contract surface; clients can derive regime and reason codes from OpenAPI without reading domain code."
+    ],
+    "status": "Pending"
   }
 ]

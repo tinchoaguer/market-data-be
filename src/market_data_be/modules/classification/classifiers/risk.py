@@ -1,5 +1,6 @@
 from ..models.inputs.risk import RiskClassifierInput
 from ..models.signal import ClassificationSignal
+from ..reason_codes import ELEVATED_RISK, HIGH_RISK, LOW_RISK, MODERATE_RISK
 
 SOURCE = "risk"
 
@@ -12,13 +13,13 @@ class RiskClassifier:
         score_value = assessment.score
 
         if score_value < 0.30:
-            score, reason = 0.30, "low_risk"
+            score, reason = 0.30, LOW_RISK
         elif score_value < 0.60:
-            score, reason = 0.10, "moderate_risk"
+            score, reason = 0.10, MODERATE_RISK
         elif score_value < 0.80:
-            score, reason = -0.20, "elevated_risk"
+            score, reason = -0.20, ELEVATED_RISK
         else:
-            score, reason = -0.40, "high_risk"
+            score, reason = -0.40, HIGH_RISK
 
         return (
             ClassificationSignal(
