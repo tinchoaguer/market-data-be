@@ -18,6 +18,9 @@ from market_data_be.infrastructure.http.composition import (
     build_classify_market,
     build_get_market_data,
 )
+from market_data_be.infrastructure.http.mappers.classification import (
+    UndeclaredClassificationReasonError,
+)
 from market_data_be.infrastructure.http.routes.analysis import (
     router as analysis_router,
 )
@@ -79,6 +82,16 @@ def create_app() -> FastAPI:
         return JSONResponse(
             status_code=500,
             content={"detail": "An unexpected error occurred while processing market data"},
+        )
+
+    @application.exception_handler(UndeclaredClassificationReasonError)
+    async def undeclared_classification_reason_handler(
+        _request: Request,
+        _exc: UndeclaredClassificationReasonError,
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "An unexpected error occurred"},
         )
 
     @application.exception_handler(Exception)

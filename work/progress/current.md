@@ -1,22 +1,22 @@
 ---
 feature:
-  id: 7
-  slug: market-data-analysis-api
+  id: 8
+  slug: classification-reason-codes
 workflow_stage: Completed
 status: Done
 blocked_from_stage: null
-started: 2026-07-11
-updated: 2026-07-11
+started: 2026-07-13
+updated: 2026-07-14
 approval:
   specification: approved
   recorded_by: human
-  recorded_at: 2026-07-11T12:00:00
+  recorded_at: 2026-07-14T11:48:00
   notes: null
 plan: []
 ---
 
 # Current Progress
 
-**Feature:** market-data-analysis-api — **Completed**
+**Feature:** classification-reason-codes — **Completed**
 
-Code review approved. Feature archived to `work/history/market-data-analysis-api.md`.
+Code review approved. Feature archived to `work/history/classification-reason-codes.md`.
