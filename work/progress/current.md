@@ -1,22 +1,22 @@
 ---
 feature:
-  id: 8
-  slug: classification-reason-codes
+  id: 9
+  slug: analysis-reason-codes
 workflow_stage: Completed
 status: Done
 blocked_from_stage: null
-started: 2026-07-13
+started: 2026-07-14
 updated: 2026-07-14
 approval:
   specification: approved
   recorded_by: human
-  recorded_at: 2026-07-14T11:48:00
+  recorded_at: 2026-07-14T14:06:00
   notes: null
 plan: []
 ---
 
 # Current Progress
 
-**Feature:** classification-reason-codes — **Completed**
+**Feature:** analysis-reason-codes — **Completed**
 
-Code review approved. Feature archived to `work/history/classification-reason-codes.md`.
+Code review approved. Feature archived to `work/history/analysis-reason-codes.md`.

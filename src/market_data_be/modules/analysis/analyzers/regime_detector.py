@@ -3,6 +3,27 @@
 from ..models.assessments import RegimeAssessment
 from ..models.enums import MarketRegime
 from ..models.market import Candle, MarketData
+from ..reason_codes import (
+    ABNORMAL_RANGE_OR_BODY,
+    ABOVE_SMA_RISING,
+    ADX_LOW_BAND,
+    ADX_STRONG,
+    BELOW_SMA_FALLING,
+    DEFAULT,
+    FREQUENT_DIRECTION_CHANGES,
+    HH_HL_STRUCTURE,
+    INSUFFICIENT_CANDLES,
+    LH_LL_STRUCTURE,
+    LOW_ADX_HIGH_ATR,
+    MINUS_DI_DOMINANT,
+    PLUS_DI_DOMINANT,
+    RELATIVE_TRADES_SPIKE,
+    RELATIVE_VOLUME_SPIKE,
+    SMA_WHIPSAW,
+    TAKER_BUY_FLOW,
+    TAKER_SELL_FLOW,
+    VOLATILITY_EXPANSION,
+)
 from . import candle_metrics as cm
 
 MIN_KLINES = 30
@@ -44,7 +65,7 @@ class RegimeDetector:
         if len(candles) < MIN_KLINES:
             return RegimeAssessment(
                 regime=MarketRegime.RANGE,
-                reasons=("insufficient_candles",),
+                reasons=(INSUFFICIENT_CANDLES,),
                 insufficient_data=True,
             )
 
@@ -69,9 +90,9 @@ class RegimeDetector:
             return trend
 
         if self._check_range(candles):
-            return MarketRegime.RANGE, ["adx_low_band"]
+            return MarketRegime.RANGE, [ADX_LOW_BAND]
 
-        return MarketRegime.RANGE, ["default"]
+        return MarketRegime.RANGE, [DEFAULT]
 
     def _check_news_spike(
         self, candles: tuple[Candle, ...]
@@ -96,11 +117,11 @@ class RegimeDetector:
             if groups >= SPIKE_MIN_GROUPS:
                 reasons = []
                 if range_group:
-                    reasons.append("abnormal_range_or_body")
+                    reasons.append(ABNORMAL_RANGE_OR_BODY)
                 if vol_hit:
-                    reasons.append("relative_volume_spike")
+                    reasons.append(RELATIVE_VOLUME_SPIKE)
                 if trades_hit:
-                    reasons.append("relative_trades_spike")
+                    reasons.append(RELATIVE_TRADES_SPIKE)
                 return MarketRegime.NEWS_SPIKE, reasons
         except ValueError:
             pass
@@ -114,7 +135,7 @@ class RegimeDetector:
             vol_short = cm.returns_volatility(candles, CHAOTIC_VOL_SHORT_PERIOD)
             vol_long = cm.returns_volatility(candles, CHAOTIC_VOL_LONG_PERIOD)
             if vol_long > 0 and vol_short / vol_long > CHAOTIC_VOL_RATIO:
-                criteria.append("volatility_expansion")
+                criteria.append(VOLATILITY_EXPANSION)
 
             adx_val, _, _ = cm.wilder_di_adx(candles, TREND_ADX_PERIOD)
             atr_val = cm.atr(candles, TREND_ADX_PERIOD)
@@ -122,13 +143,13 @@ class RegimeDetector:
             if len(atr_series) >= CHAOTIC_ATR_SMA_PERIOD:
                 atr_sma = sum(atr_series[-CHAOTIC_ATR_SMA_PERIOD:]) / CHAOTIC_ATR_SMA_PERIOD
                 if adx_val < CHAOTIC_ADX_MAX and atr_val > atr_sma:
-                    criteria.append("low_adx_high_atr")
+                    criteria.append(LOW_ADX_HIGH_ATR)
 
             if cm.direction_changes(candles, CHAOTIC_DIRECTION_WINDOW) >= CHAOTIC_MIN_DIRECTION_CHANGES:
-                criteria.append("frequent_direction_changes")
+                criteria.append(FREQUENT_DIRECTION_CHANGES)
 
             if cm.sma_cross_count(candles, TREND_SMA_PERIOD, window=10) >= CHAOTIC_MIN_SMA_CROSSES:
-                criteria.append("sma_whipsaw")
+                criteria.append(SMA_WHIPSAW)
 
             if len(criteria) >= CHAOTIC_MIN_CRITERIA:
                 return MarketRegime.CHAOTIC, criteria
@@ -154,36 +175,36 @@ class RegimeDetector:
             if adx_val > TREND_ADX_MIN:
                 up_score += 1
                 down_score += 1
-                up_reasons.append("adx_strong")
-                down_reasons.append("adx_strong")
+                up_reasons.append(ADX_STRONG)
+                down_reasons.append(ADX_STRONG)
 
             if plus_di > minus_di:
                 up_score += 1
-                up_reasons.append("plus_di_dominant")
+                up_reasons.append(PLUS_DI_DOMINANT)
             if minus_di > plus_di:
                 down_score += 1
-                down_reasons.append("minus_di_dominant")
+                down_reasons.append(MINUS_DI_DOMINANT)
 
             if cm.higher_highs_higher_lows(candles, TREND_STRUCTURE_WINDOW):
                 up_score += 1
-                up_reasons.append("hh_hl_structure")
+                up_reasons.append(HH_HL_STRUCTURE)
             if cm.lower_highs_lower_lows(candles, TREND_STRUCTURE_WINDOW):
                 down_score += 1
-                down_reasons.append("lh_ll_structure")
+                down_reasons.append(LH_LL_STRUCTURE)
 
             if close > sma_val and slope > 0:
                 up_score += 1
-                up_reasons.append("above_sma_rising")
+                up_reasons.append(ABOVE_SMA_RISING)
             if close < sma_val and slope < 0:
                 down_score += 1
-                down_reasons.append("below_sma_falling")
+                down_reasons.append(BELOW_SMA_FALLING)
 
             if taker > TREND_TAKER_BULL:
                 up_score += 1
-                up_reasons.append("taker_buy_flow")
+                up_reasons.append(TAKER_BUY_FLOW)
             if taker < TREND_TAKER_BEAR:
                 down_score += 1
-                down_reasons.append("taker_sell_flow")
+                down_reasons.append(TAKER_SELL_FLOW)
 
             if up_score >= TREND_MIN_CRITERIA and up_score > down_score:
                 return MarketRegime.TREND_UP, up_reasons

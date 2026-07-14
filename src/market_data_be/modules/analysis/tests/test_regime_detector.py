@@ -1,5 +1,8 @@
+import pytest
+
 from market_data_be.modules.analysis.analyzers.regime_detector import MIN_KLINES, RegimeDetector
 from market_data_be.modules.analysis.models import MarketRegime
+from market_data_be.modules.analysis.reason_codes import REGIME_REASON_CODES
 from market_data_be.modules.analysis.tests.fixtures import _candle, _market_data
 
 
@@ -101,3 +104,38 @@ def test_downtrend_detected():
     detector = RegimeDetector()
     assessment = detector.assess(_market_data(candles))
     assert assessment.regime == MarketRegime.TREND_DOWN
+
+
+def _downtrend_series(count: int = 35):
+    candles = []
+    price = 200.0
+    low = 199.0
+    for _ in range(count):
+        o = price
+        c = price - 3.0
+        h = o + 1.0
+        low -= 1.0
+        candles.append(_candle(o, h, low, c, base_volume=120.0, trade_count=12, taker_ratio=0.4))
+        price = c
+    return candles
+
+
+@pytest.mark.parametrize(
+    "candles",
+    [
+        _flat_range_series(MIN_KLINES - 1),
+        _flat_range_series(),
+        _uptrend_series(),
+        _downtrend_series(),
+        _chaotic_series(),
+        _news_spike_series(),
+    ],
+)
+def test_regime_detector_emits_only_declared_reason_codes(candles) -> None:
+    detector = RegimeDetector()
+    assessment = detector.assess(_market_data(candles))
+
+    assert assessment.reasons
+    for reason in assessment.reasons:
+        assert reason in REGIME_REASON_CODES
+

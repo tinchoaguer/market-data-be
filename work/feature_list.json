@@ -115,6 +115,6 @@
       "RegimeDetector emits only reason codes that belong to the declared DTO contract.",
       "The HTTP DTO remains the public contract surface; clients can derive regime and reason codes from OpenAPI without reading domain code."
     ],
-    "status": "Pending"
+    "status": "Done"
   }
 ]

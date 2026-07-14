@@ -1,4 +1,6 @@
 from market_data_be.infrastructure.http.dtos.analysis import (
+    AnalysisRegimeLabel,
+    AnalysisRegimeReasonCode,
     CatalogResultResponse,
     EconomicAssessmentResponse,
     ExposureComponentsResponse,
@@ -17,10 +19,40 @@ from market_data_be.modules.analysis.models.assessments import (
 from market_data_be.modules.analysis.models.strategy_catalog import CatalogResult
 
 
+class UndeclaredAnalysisRegimeError(ValueError):
+    """Raised when a domain regime label is not in the HTTP closed set."""
+
+    def __init__(self, regime: str) -> None:
+        self.regime = regime
+        super().__init__(f"undeclared analysis regime label: {regime!r}")
+
+
+class UndeclaredAnalysisReasonError(ValueError):
+    """Raised when a domain regime reason is not in the HTTP closed set."""
+
+    def __init__(self, reason: str) -> None:
+        self.reason = reason
+        super().__init__(f"undeclared analysis regime reason: {reason!r}")
+
+
+def _parse_regime_label(regime: str) -> AnalysisRegimeLabel:
+    try:
+        return AnalysisRegimeLabel(regime)
+    except ValueError as exc:
+        raise UndeclaredAnalysisRegimeError(regime=regime) from exc
+
+
+def _parse_regime_reason(reason: str) -> AnalysisRegimeReasonCode:
+    try:
+        return AnalysisRegimeReasonCode(reason)
+    except ValueError as exc:
+        raise UndeclaredAnalysisReasonError(reason=reason) from exc
+
+
 def _map_regime(assessment: RegimeAssessment) -> RegimeAssessmentResponse:
     return RegimeAssessmentResponse(
-        regime=assessment.regime.value,
-        reasons=list(assessment.reasons),
+        regime=_parse_regime_label(assessment.regime.value),
+        reasons=[_parse_regime_reason(reason) for reason in assessment.reasons],
         insufficient_data=assessment.insufficient_data,
     )
 
