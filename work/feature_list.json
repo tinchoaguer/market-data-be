@@ -116,5 +116,33 @@
       "The HTTP DTO remains the public contract surface; clients can derive regime and reason codes from OpenAPI without reading domain code."
     ],
     "status": "Done"
+  },
+  {
+    "id": 10,
+    "slug": "analysis-message-refs",
+    "title": "Analysis MessageRefs",
+    "description": "Replace analysis catalog/assessment prose and token dumps with structured MessageRef (code + params) on analysis HTTP DTOs so clients resolve copy via Content. Epic content-i18n; sync shared/openapi.json when the public contract changes. FE resolves via content-* Features — this Feature is BE-only.",
+    "acceptance": [
+      "User-facing analysis narrative that today is free-text prose or interpolated English is emitted as MessageRef (code + params) on the analysis HTTP response DTOs.",
+      "Catalog/assessment builders in analysis domain do not emit interpolated display English for those narrative fields.",
+      "MessageRef params carry typed data only (enums, numbers, ids) — never prose.",
+      "OpenAPI for the analysis endpoint documents the MessageRef shape (and updated fields) on the public contract.",
+      "Clients can consume MessageRefs without reading domain internals; BE does not call FE Content resolve for UI v1."
+    ],
+    "status": "Pending"
+  },
+  {
+    "id": 11,
+    "slug": "classification-message-refs",
+    "title": "Classification MessageRefs",
+    "description": "Emit MessageRefs (not display English) for classification user-facing narrative and errors as needed on classification HTTP DTOs. Epic content-i18n; sync shared/openapi.json when the public contract changes. Coordinates with FE content-* Features — this Feature is BE-only.",
+    "acceptance": [
+      "Classification signals (and related user-facing narrative fields in scope) expose MessageRef (code + params) instead of display English sentences.",
+      "Classification domain/classifiers do not emit interpolated display English for those fields.",
+      "Where in-scope API errors need client-resolvable copy, responses carry a machine code and/or MessageRef rather than hardcoded English sentences in routes.",
+      "OpenAPI for the classification endpoint documents the MessageRef shape (and updated fields) on the public contract.",
+      "Reason-code closed sets remain usable as MessageRef codes or params as designed; clients resolve text outside BE domain."
+    ],
+    "status": "Pending"
   }
 ]
