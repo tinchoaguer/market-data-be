@@ -29,13 +29,15 @@ Install from `../harness/agents/` to `~/.cursor/agents/`.
 
 ```
 market-data-be/
-    knowledge/       # project context (architecture, ADRs)
+    knowledge/       # project context (architecture, testing-policy, ADRs)
     work/            # backlog and progress
     specs/           # feature specifications
     src/
         market_data_be/   # installable Python package
     resources/       # static fixtures (outside package)
 ```
+
+Testing rules for specs and agents: `knowledge/testing-policy.md`.
 
 ## Starting a feature
 

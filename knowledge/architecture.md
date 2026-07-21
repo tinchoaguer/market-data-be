@@ -20,6 +20,7 @@
 ## 4. Testing Strategy
 - Tests must be strictly unit tests, reside inside each module's directory (`/tests`), and use only standard testing tools (or pytest as a runner).
 - Domain logic must be testable without any external library dependencies or framework setup.
+- Risk, oracle strength, and anti-bloat rules: [`testing-policy.md`](testing-policy.md) (authoritative for Spec Writer / Implementer / Reviewer).
 
 
 ## System overview
@@ -219,12 +220,13 @@ See [ADR-0001](adr/0001-package-layout-and-domain-facades.md) for the migration 
 - Domain modules: **stdlib only** — no Pydantic, FastAPI, SQLAlchemy inside `modules/`
 - Infrastructure and frameworks live outside domain modules
 - Models: `@dataclass(frozen=True, slots=True)` by default
-- Tests: unit tests inside each module's `tests/` directory; HTTP integration tests under `infrastructure/tests/`
+- Tests: unit tests inside each module's `tests/` directory; HTTP integration tests under `infrastructure/tests/`; see [`testing-policy.md`](testing-policy.md)
 - Naming: responsibility-driven; avoid Manager, Helper, Processor, Utils (existing `*Engine` facades are grandfathered)
 
 ## Related documents
 
 - `.cursorrules`
+- [`knowledge/testing-policy.md`](testing-policy.md)
 - `knowledge/adr/0001-package-layout-and-domain-facades.md`
 - `ARQUITECTURA_MOTOR.md` (Spanish reference — may predate `modules/` layout)
 - Feature specs under `specs/` (historical; see **Amendments** sections where present)

@@ -19,10 +19,14 @@
 
 ## Tests
 
-- Unit tests only
-- Location: `<module>/tests/`
-- No external dependencies for domain logic tests
-- Use pytest as runner
+Follow [`testing-policy.md`](testing-policy.md) (authoritative).
+
+Summary:
+
+- Unit tests by default; location `<layer>/tests/` (HTTP under `infrastructure/tests/`)
+- Strong oracles over file count or line coverage
+- Domain tests: no FastAPI/Pydantic; pytest as runner
+- Do not require one new test file per AC
 
 ## Specifications
 
