@@ -26,11 +26,12 @@
 
 ## Specifications
 
-Follow `../harness/governance/spec_guidelines.md`:
+Follow harness `governance/spec_guidelines.md` (see `HARNESS.md`):
 
 - EARS notation in `requirements.md`
 - REQ-NNN identifiers
 - Traceability across requirements, design, tasks, code, and tests
+- Specs stay inside this PROJECT_ROOT
 
 ## Git
 
