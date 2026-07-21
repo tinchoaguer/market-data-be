@@ -1,6 +1,7 @@
 from enum import StrEnum
+from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class AnalysisRegimeLabel(StrEnum):
@@ -31,6 +32,26 @@ class AnalysisRegimeReasonCode(StrEnum):
     BELOW_SMA_FALLING = "below_sma_falling"
     TAKER_BUY_FLOW = "taker_buy_flow"
     TAKER_SELL_FLOW = "taker_sell_flow"
+
+
+class AnalysisNarrativeMessageCode(StrEnum):
+    CATALOG_WAIT = "catalog.wait"
+    CATALOG_STRATEGY_ALLOWED = "catalog.strategy_allowed"
+    CATALOG_NO_STRATEGY_ALLOWED = "catalog.no_strategy_allowed"
+    HARD_GATE_EXTREME_REGIME = "catalog.hard_gate.extreme_regime"
+    HARD_GATE_RISK_TOO_HIGH = "catalog.hard_gate.risk_too_high"
+    HARD_GATE_NEGATIVE_EDGE = "catalog.hard_gate.negative_edge"
+    HARD_GATE_NO_CAPACITY = "catalog.hard_gate.no_capacity"
+
+
+MessageParamValue = str | int | float | bool
+
+
+class MessageRefResponse(BaseModel):
+    code: AnalysisNarrativeMessageCode
+    params: dict[str, MessageParamValue] = Field(default_factory=dict)
+    severity: Literal["info", "warning", "error"] | None = None
+    channel: Literal["ui", "email", "push", "sms", "log"] | None = None
 
 
 class RegimeAssessmentResponse(BaseModel):
@@ -74,8 +95,8 @@ class CatalogResultResponse(BaseModel):
     allowed_strategies: list[str]
     forbidden_strategies: list[str]
     preferred_strategy: str
-    catalog_reason: str
-    hard_gate_reason: str | None = None
+    catalog_reason: MessageRefResponse
+    hard_gate_reason: MessageRefResponse | None = None
 
 
 class MarketAnalysisResponse(BaseModel):

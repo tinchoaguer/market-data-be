@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 
 from .enums import StrategyType
+from .message_ref import MessageRef
 
 
 @dataclass(frozen=True, slots=True)
@@ -10,8 +11,8 @@ class CatalogResult:
     allowed_strategies: tuple[StrategyType, ...]
     forbidden_strategies: tuple[StrategyType, ...]
     preferred_strategy: StrategyType
-    catalog_reason: str
-    hard_gate_reason: str | None = None
+    catalog_reason: MessageRef
+    hard_gate_reason: MessageRef | None = None
 
     @property
     def is_hard_gated(self) -> bool:

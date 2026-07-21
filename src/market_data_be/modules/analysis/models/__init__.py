@@ -9,6 +9,7 @@ from .assessments import (
 )
 from .enums import MarketRegime, StrategyType, Timeframe
 from .market import Candle, CandleSeries, MarketData, OrderBook, OrderLevel
+from .message_ref import MessageRef
 from .portfolio import PortfolioConstraints, PortfolioState
 from .strategy_catalog import CatalogResult
 
@@ -22,6 +23,7 @@ __all__ = [
     "ExposureProfile",
     "MarketData",
     "MarketRegime",
+    "MessageRef",
     "OrderBook",
     "OrderLevel",
     "PortfolioConstraints",

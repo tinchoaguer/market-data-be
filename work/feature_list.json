@@ -121,21 +121,21 @@
     "id": 10,
     "slug": "analysis-message-refs",
     "title": "Analysis MessageRefs",
-    "description": "Replace analysis catalog/assessment prose and token dumps with structured MessageRef (code + params) on analysis HTTP DTOs so clients resolve copy via Content. Epic content-i18n. This Feature is BE-only.",
+    "description": "Replace analysis catalog/assessment prose and token dumps with structured MessageRef (code + params) on analysis HTTP DTOs so clients consume message references instead of display English.",
     "acceptance": [
       "User-facing analysis narrative that today is free-text prose or interpolated English is emitted as MessageRef (code + params) on the analysis HTTP response DTOs.",
       "Catalog/assessment builders in analysis domain do not emit interpolated display English for those narrative fields.",
-      "MessageRef params carry typed data only (enums, numbers, ids) — never prose.",
+      "MessageRef params carry typed data only (enums, numbers, ids) \u2014 never prose.",
       "OpenAPI for the analysis endpoint documents the MessageRef shape (and updated fields) on the public contract.",
-      "Clients can consume MessageRefs without reading domain internals; BE does not call FE Content resolve for UI v1."
+      "Clients can consume MessageRefs without reading domain internals; the backend does not resolve display copy."
     ],
-    "status": "In Progress"
+    "status": "Done"
   },
   {
     "id": 11,
     "slug": "classification-message-refs",
     "title": "Classification MessageRefs",
-    "description": "Emit MessageRefs (not display English) for classification user-facing narrative and errors as needed on classification HTTP DTOs. Epic content-i18n. This Feature is BE-only.",
+    "description": "Emit MessageRefs (not display English) for classification user-facing narrative and errors as needed on classification HTTP DTOs.",
     "acceptance": [
       "Classification signals (and related user-facing narrative fields in scope) expose MessageRef (code + params) instead of display English sentences.",
       "Classification domain/classifiers do not emit interpolated display English for those fields.",

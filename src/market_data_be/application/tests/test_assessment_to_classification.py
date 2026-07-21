@@ -16,7 +16,9 @@ from market_data_be.modules.analysis.models.assessments import (
     RiskAssessment,
 )
 from market_data_be.modules.analysis.models.enums import MarketRegime, StrategyType
+from market_data_be.modules.analysis.models.message_ref import MessageRef
 from market_data_be.modules.analysis.models.strategy_catalog import CatalogResult
+from market_data_be.modules.analysis.narrative_codes import CATALOG_STRATEGY_ALLOWED
 from market_data_be.modules.classification.models.classification_inputs import (
     ClassificationInputs,
 )
@@ -122,7 +124,10 @@ def test_to_classification_inputs_bundles_analysis_assessments() -> None:
             allowed_strategies=(StrategyType.TREND_FOLLOWING,),
             forbidden_strategies=(),
             preferred_strategy=StrategyType.TREND_FOLLOWING,
-            catalog_reason="test",
+            catalog_reason=MessageRef.of(
+                CATALOG_STRATEGY_ALLOWED,
+                strategy=StrategyType.TREND_FOLLOWING.value,
+            ),
         ),
     )
 
