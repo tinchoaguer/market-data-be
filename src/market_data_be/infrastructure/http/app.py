@@ -19,6 +19,8 @@ from market_data_be.infrastructure.http.composition import (
     build_get_market_data,
 )
 from market_data_be.infrastructure.http.mappers.analysis import (
+    InvalidAnalysisMessageParamsError,
+    UndeclaredAnalysisMessageCodeError,
     UndeclaredAnalysisReasonError,
     UndeclaredAnalysisRegimeError,
 )
@@ -114,6 +116,26 @@ def create_app() -> FastAPI:
     async def undeclared_analysis_reason_handler(
         _request: Request,
         _exc: UndeclaredAnalysisReasonError,
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "An unexpected error occurred"},
+        )
+
+    @application.exception_handler(UndeclaredAnalysisMessageCodeError)
+    async def undeclared_analysis_message_code_handler(
+        _request: Request,
+        _exc: UndeclaredAnalysisMessageCodeError,
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "An unexpected error occurred"},
+        )
+
+    @application.exception_handler(InvalidAnalysisMessageParamsError)
+    async def invalid_analysis_message_params_handler(
+        _request: Request,
+        _exc: InvalidAnalysisMessageParamsError,
     ) -> JSONResponse:
         return JSONResponse(
             status_code=500,

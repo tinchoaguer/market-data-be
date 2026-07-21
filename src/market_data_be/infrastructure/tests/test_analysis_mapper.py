@@ -3,10 +3,13 @@ from enum import Enum
 import pytest
 
 from market_data_be.infrastructure.http.dtos.analysis import (
+    AnalysisNarrativeMessageCode,
     AnalysisRegimeLabel,
     AnalysisRegimeReasonCode,
 )
 from market_data_be.infrastructure.http.mappers.analysis import (
+    InvalidAnalysisMessageParamsError,
+    UndeclaredAnalysisMessageCodeError,
     UndeclaredAnalysisReasonError,
     UndeclaredAnalysisRegimeError,
     map_analysis_result_to_response,
@@ -18,17 +21,27 @@ from market_data_be.modules.analysis.models import (
     ExposureComponents,
     ExposureProfile,
     MarketRegime,
+    MessageRef,
     RegimeAssessment,
     RiskAssessment,
     StrategyType,
 )
+from market_data_be.modules.analysis.narrative_codes import CATALOG_STRATEGY_ALLOWED
 
 
 def _sample_analysis_result(
     *,
     regime: MarketRegime = MarketRegime.TREND_UP,
     reasons: tuple[str, ...] = ("adx_strong", "plus_di_dominant"),
+    catalog_reason: MessageRef | None = None,
+    hard_gate_reason: MessageRef | None = None,
 ) -> AnalysisResult:
+    if catalog_reason is None:
+        catalog_reason = MessageRef.of(
+            CATALOG_STRATEGY_ALLOWED,
+            strategy=StrategyType.TREND_FOLLOWING.value,
+            regime=regime.value,
+        )
     return AnalysisResult(
         symbol="BTC/USDT",
         regime=RegimeAssessment(regime=regime, reasons=reasons),
@@ -53,8 +66,8 @@ def _sample_analysis_result(
             allowed_strategies=(StrategyType.TREND_FOLLOWING,),
             forbidden_strategies=(),
             preferred_strategy=StrategyType.TREND_FOLLOWING,
-            catalog_reason="test",
-            hard_gate_reason=None,
+            catalog_reason=catalog_reason,
+            hard_gate_reason=hard_gate_reason,
         ),
     )
 
@@ -77,6 +90,14 @@ def test_mapper_accepts_all_market_regime_labels(regime: MarketRegime) -> None:
 
     assert response.regime.regime.value == regime.value
     assert response.regime.regime in AnalysisRegimeLabel
+
+
+def test_mapper_maps_message_refs() -> None:
+    response = map_analysis_result_to_response(_sample_analysis_result())
+
+    assert response.catalog.catalog_reason.code == AnalysisNarrativeMessageCode.CATALOG_STRATEGY_ALLOWED
+    assert response.catalog.catalog_reason.params["strategy"] == "TREND_FOLLOWING"
+    assert response.catalog.hard_gate_reason is None
 
 
 def test_mapper_rejects_undeclared_regime() -> None:
@@ -109,3 +130,62 @@ def test_mapper_rejects_undeclared_reason() -> None:
         )
 
     assert exc_info.value.reason == "not_a_declared_reason"
+
+
+def test_mapper_rejects_undeclared_message_code() -> None:
+    with pytest.raises(UndeclaredAnalysisMessageCodeError) as exc_info:
+        map_analysis_result_to_response(
+            _sample_analysis_result(
+                catalog_reason=MessageRef.of("catalog.not_a_declared_code")
+            )
+        )
+
+    assert exc_info.value.code == "catalog.not_a_declared_code"
+
+
+def test_mapper_rejects_prose_message_params() -> None:
+    with pytest.raises(InvalidAnalysisMessageParamsError):
+        map_analysis_result_to_response(
+            _sample_analysis_result(
+                catalog_reason=MessageRef.of(
+                    CATALOG_STRATEGY_ALLOWED,
+                    note="risk score too high for allocation",
+                )
+            )
+        )
+
+
+def test_mapper_rejects_non_scalar_message_params() -> None:
+    bad_ref = MessageRef(
+        code=CATALOG_STRATEGY_ALLOWED,
+        params=(("strategies", ("TREND_FOLLOWING", "PING_PONG")),),  # type: ignore[arg-type]
+    )
+    with pytest.raises(InvalidAnalysisMessageParamsError):
+        map_analysis_result_to_response(
+            _sample_analysis_result(catalog_reason=bad_ref)
+        )
+
+
+def test_mapper_maps_hard_gate_message_ref() -> None:
+    hard_gate = MessageRef.of(
+        "catalog.hard_gate.risk_too_high",
+        risk_score=0.9,
+    )
+    catalog_reason = MessageRef.of(
+        "catalog.wait",
+        gate="risk_too_high",
+        risk_score=0.9,
+    )
+    response = map_analysis_result_to_response(
+        _sample_analysis_result(
+            catalog_reason=catalog_reason,
+            hard_gate_reason=hard_gate,
+        )
+    )
+
+    assert response.catalog.hard_gate_reason is not None
+    assert (
+        response.catalog.hard_gate_reason.code
+        == AnalysisNarrativeMessageCode.HARD_GATE_RISK_TOO_HIGH
+    )
+    assert response.catalog.hard_gate_reason.params["risk_score"] == 0.9

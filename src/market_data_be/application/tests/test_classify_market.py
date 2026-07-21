@@ -20,8 +20,10 @@ from market_data_be.modules.analysis.models.market import (
     OrderBook,
     Timeframe,
 )
+from market_data_be.modules.analysis.models.message_ref import MessageRef
 from market_data_be.modules.analysis.models.portfolio import PortfolioState
 from market_data_be.modules.analysis.models.strategy_catalog import CatalogResult
+from market_data_be.modules.analysis.narrative_codes import CATALOG_STRATEGY_ALLOWED
 from market_data_be.modules.classification.market_classification_engine import (
     MarketClassificationEngine,
 )
@@ -108,7 +110,10 @@ def _sample_analysis_result(symbol: str = "BTC/USDT") -> AnalysisResult:
             allowed_strategies=(StrategyType.TREND_FOLLOWING,),
             forbidden_strategies=(),
             preferred_strategy=StrategyType.TREND_FOLLOWING,
-            catalog_reason="test",
+            catalog_reason=MessageRef.of(
+                CATALOG_STRATEGY_ALLOWED,
+                strategy=StrategyType.TREND_FOLLOWING.value,
+            ),
         ),
     )
 
