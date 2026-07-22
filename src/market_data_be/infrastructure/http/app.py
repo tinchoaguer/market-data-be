@@ -18,6 +18,10 @@ from market_data_be.infrastructure.http.composition import (
     build_classify_market,
     build_get_market_data,
 )
+from market_data_be.infrastructure.http.dtos.classification import (
+    ClassificationErrorCode,
+    ClassificationErrorDetail,
+)
 from market_data_be.infrastructure.http.mappers.analysis import (
     InvalidAnalysisMessageParamsError,
     UndeclaredAnalysisMessageCodeError,
@@ -25,6 +29,7 @@ from market_data_be.infrastructure.http.mappers.analysis import (
     UndeclaredAnalysisRegimeError,
 )
 from market_data_be.infrastructure.http.mappers.classification import (
+    InvalidClassificationMessageParamsError,
     UndeclaredClassificationReasonError,
 )
 from market_data_be.infrastructure.http.routes.analysis import (
@@ -99,7 +104,27 @@ def create_app() -> FastAPI:
     ) -> JSONResponse:
         return JSONResponse(
             status_code=500,
-            content={"detail": "An unexpected error occurred"},
+            content={
+                "detail": ClassificationErrorDetail(
+                    code=ClassificationErrorCode.UNDECLARED_REASON,
+                    message="An unexpected error occurred",
+                ).model_dump()
+            },
+        )
+
+    @application.exception_handler(InvalidClassificationMessageParamsError)
+    async def invalid_classification_message_params_handler(
+        _request: Request,
+        _exc: InvalidClassificationMessageParamsError,
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "detail": ClassificationErrorDetail(
+                    code=ClassificationErrorCode.INVALID_MESSAGE_PARAMS,
+                    message="An unexpected error occurred",
+                ).model_dump()
+            },
         )
 
     @application.exception_handler(UndeclaredAnalysisRegimeError)

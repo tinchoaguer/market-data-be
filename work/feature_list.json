@@ -143,6 +143,6 @@
       "OpenAPI for the classification endpoint documents the MessageRef shape (and updated fields) on the public contract.",
       "Reason-code closed sets remain usable as MessageRef codes or params as designed; clients resolve text outside BE domain."
     ],
-    "status": "Pending"
+    "status": "Done"
   }
 ]

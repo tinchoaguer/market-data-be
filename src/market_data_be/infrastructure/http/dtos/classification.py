@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class RegimeReasonCode(StrEnum):
@@ -31,28 +31,51 @@ class ExposureReasonCode(StrEnum):
     CONSTRAINED_CAPACITY = "constrained_capacity"
 
 
+MessageParamValue = str | int | float | bool
+
+
+class RegimeSignalMessageRef(BaseModel):
+    code: RegimeReasonCode
+    params: dict[str, MessageParamValue] = Field(default_factory=dict)
+
+
+class RiskSignalMessageRef(BaseModel):
+    code: RiskReasonCode
+    params: dict[str, MessageParamValue] = Field(default_factory=dict)
+
+
+class EconomicSignalMessageRef(BaseModel):
+    code: EconomicReasonCode
+    params: dict[str, MessageParamValue] = Field(default_factory=dict)
+
+
+class ExposureSignalMessageRef(BaseModel):
+    code: ExposureReasonCode
+    params: dict[str, MessageParamValue] = Field(default_factory=dict)
+
+
 class RegimeSignalResponse(BaseModel):
     source: str
     score: float
-    reason: RegimeReasonCode
+    reason: RegimeSignalMessageRef
 
 
 class RiskSignalResponse(BaseModel):
     source: str
     score: float
-    reason: RiskReasonCode
+    reason: RiskSignalMessageRef
 
 
 class EconomicSignalResponse(BaseModel):
     source: str
     score: float
-    reason: EconomicReasonCode
+    reason: EconomicSignalMessageRef
 
 
 class ExposureSignalResponse(BaseModel):
     source: str
     score: float
-    reason: ExposureReasonCode
+    reason: ExposureSignalMessageRef
 
 
 class MarketClassificationResponse(BaseModel):
@@ -61,3 +84,14 @@ class MarketClassificationResponse(BaseModel):
     risk: list[RiskSignalResponse]
     economic: list[EconomicSignalResponse]
     exposure: list[ExposureSignalResponse]
+
+
+class ClassificationErrorCode(StrEnum):
+    INVALID_SYMBOL_FORMAT = "classification.invalid_symbol_format"
+    UNDECLARED_REASON = "classification.undeclared_reason"
+    INVALID_MESSAGE_PARAMS = "classification.invalid_message_params"
+
+
+class ClassificationErrorDetail(BaseModel):
+    code: ClassificationErrorCode
+    message: str

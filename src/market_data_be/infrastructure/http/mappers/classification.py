@@ -1,15 +1,21 @@
+import re
 from enum import StrEnum
 from typing import TypeVar
 
 from market_data_be.infrastructure.http.dtos.classification import (
     EconomicReasonCode,
+    EconomicSignalMessageRef,
     EconomicSignalResponse,
     ExposureReasonCode,
+    ExposureSignalMessageRef,
     ExposureSignalResponse,
     MarketClassificationResponse,
+    MessageParamValue,
     RegimeReasonCode,
+    RegimeSignalMessageRef,
     RegimeSignalResponse,
     RiskReasonCode,
+    RiskSignalMessageRef,
     RiskSignalResponse,
 )
 from market_data_be.modules.classification.models.classification_result import (
@@ -18,6 +24,9 @@ from market_data_be.modules.classification.models.classification_result import (
 from market_data_be.modules.classification.models.signal import ClassificationSignal
 
 ReasonCodeT = TypeVar("ReasonCodeT", bound=StrEnum)
+
+# Machine-token strings: no whitespace, no sentence punctuation used for display English.
+_PROSE_STRING_PATTERN = re.compile(r"[\s.,;:!?\"'`]")
 
 
 class UndeclaredClassificationReasonError(ValueError):
@@ -31,6 +40,15 @@ class UndeclaredClassificationReasonError(ValueError):
         )
 
 
+class InvalidClassificationMessageParamsError(ValueError):
+    """Raised when a classification MessageRef param violates typed-scalar / no-prose rules."""
+
+    def __init__(self, group: str, detail: str) -> None:
+        self.group = group
+        self.detail = detail
+        super().__init__(f"invalid classification message params for group {group!r}: {detail}")
+
+
 def _parse_reason(
     reason: str,
     reason_code_type: type[ReasonCodeT],
@@ -42,6 +60,35 @@ def _parse_reason(
         raise UndeclaredClassificationReasonError(group=group, reason=reason) from exc
 
 
+def _validate_param_value(group: str, key: str, value: object) -> MessageParamValue:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int) and not isinstance(value, bool):
+        return value
+    if isinstance(value, float):
+        return value
+    if isinstance(value, str):
+        if not value or _PROSE_STRING_PATTERN.search(value):
+            raise InvalidClassificationMessageParamsError(
+                group, f"param {key!r} is not a machine token"
+            )
+        return value
+    raise InvalidClassificationMessageParamsError(
+        group, f"param {key!r} has non-scalar type {type(value).__name__}"
+    )
+
+
+def _build_params(group: str, raw_params: dict[str, object]) -> dict[str, MessageParamValue]:
+    params: dict[str, MessageParamValue] = {}
+    for key, value in raw_params.items():
+        if not isinstance(key, str) or not key:
+            raise InvalidClassificationMessageParamsError(
+                group, "param keys must be non-empty strings"
+            )
+        params[key] = _validate_param_value(group, key, value)
+    return params
+
+
 def _map_regime_signals(
     signals: tuple[ClassificationSignal, ...],
 ) -> list[RegimeSignalResponse]:
@@ -49,7 +96,10 @@ def _map_regime_signals(
         RegimeSignalResponse(
             source=signal.source,
             score=signal.score,
-            reason=_parse_reason(signal.reason, RegimeReasonCode, "regime"),
+            reason=RegimeSignalMessageRef(
+                code=_parse_reason(signal.reason, RegimeReasonCode, "regime"),
+                params=_build_params("regime", {}),
+            ),
         )
         for signal in signals
     ]
@@ -62,7 +112,10 @@ def _map_risk_signals(
         RiskSignalResponse(
             source=signal.source,
             score=signal.score,
-            reason=_parse_reason(signal.reason, RiskReasonCode, "risk"),
+            reason=RiskSignalMessageRef(
+                code=_parse_reason(signal.reason, RiskReasonCode, "risk"),
+                params=_build_params("risk", {}),
+            ),
         )
         for signal in signals
     ]
@@ -75,7 +128,10 @@ def _map_economic_signals(
         EconomicSignalResponse(
             source=signal.source,
             score=signal.score,
-            reason=_parse_reason(signal.reason, EconomicReasonCode, "economic"),
+            reason=EconomicSignalMessageRef(
+                code=_parse_reason(signal.reason, EconomicReasonCode, "economic"),
+                params=_build_params("economic", {}),
+            ),
         )
         for signal in signals
     ]
@@ -88,7 +144,10 @@ def _map_exposure_signals(
         ExposureSignalResponse(
             source=signal.source,
             score=signal.score,
-            reason=_parse_reason(signal.reason, ExposureReasonCode, "exposure"),
+            reason=ExposureSignalMessageRef(
+                code=_parse_reason(signal.reason, ExposureReasonCode, "exposure"),
+                params=_build_params("exposure", {}),
+            ),
         )
         for signal in signals
     ]
