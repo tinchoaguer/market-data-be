@@ -9,10 +9,14 @@ from fastapi.testclient import TestClient
 from market_data_be.application.use_cases.classify_market import ClassifyMarket
 from market_data_be.infrastructure.http.app import create_app
 from market_data_be.infrastructure.http.dtos.classification import (
+    ClassificationErrorCode,
     EconomicReasonCode,
     ExposureReasonCode,
     RegimeReasonCode,
     RiskReasonCode,
+)
+from market_data_be.infrastructure.http.mappers.classification import (
+    InvalidClassificationMessageParamsError,
 )
 from market_data_be.infrastructure.http.validation.symbol import parse_url_symbol
 from market_data_be.modules.classification.models.classification_result import (
@@ -47,10 +51,23 @@ def _reason_enum_from_signal_schema(
     signal_schema_name: str,
 ) -> set[str]:
     signal_schema = openapi["components"]["schemas"][signal_schema_name]
-    reason_schema = _resolve_schema(openapi, signal_schema["properties"]["reason"])
-    enum_values = reason_schema.get("enum")
-    assert enum_values is not None, f"missing enum on {signal_schema_name}.reason"
+    message_ref_schema = _resolve_schema(openapi, signal_schema["properties"]["reason"])
+    assert "params" in message_ref_schema["properties"], (
+        f"missing params on {signal_schema_name}.reason MessageRef"
+    )
+    code_schema = _resolve_schema(openapi, message_ref_schema["properties"]["code"])
+    enum_values = code_schema.get("enum")
+    assert enum_values is not None, f"missing enum on {signal_schema_name}.reason.code"
     return set(enum_values)
+
+
+def _assert_message_ref(value: object, allowed_codes: set[str]) -> None:
+    assert isinstance(value, dict)
+    assert not isinstance(value, str)
+    assert set(value.keys()) == {"code", "params"}
+    assert value["code"] in allowed_codes
+    assert isinstance(value["params"], dict)
+    assert value["params"] == {}
 
 
 def _assert_classification_body(body: dict[str, object], expected_symbol: str) -> None:
@@ -64,9 +81,8 @@ def _assert_classification_body(body: dict[str, object], expected_symbol: str) -
             assert isinstance(signal, dict)
             assert isinstance(signal["source"], str)
             assert isinstance(signal["score"], (int, float))
-            assert isinstance(signal["reason"], str)
             assert signal["source"] in EXPECTED_SOURCES
-            assert signal["reason"] in allowed
+            _assert_message_ref(signal["reason"], allowed)
 
 
 @pytest.mark.parametrize(
@@ -121,7 +137,19 @@ def test_classification_invalid_symbol_format_returns_422(url_symbol: str) -> No
     response = client.get(f"/markets/{url_symbol}/classification")
 
     assert response.status_code == 422
-    assert "detail" in response.json()
+    body = response.json()
+    assert "detail" in body
+    assert body["detail"]["code"] == ClassificationErrorCode.INVALID_SYMBOL_FORMAT.value
+
+
+def test_classification_slash_rejected_path_returns_422_with_invalid_symbol_code() -> None:
+    client = TestClient(create_app())
+    response = client.get("/markets/BTC/USDT/classification")
+
+    assert response.status_code == 422
+    body = response.json()
+    assert "detail" in body
+    assert body["detail"]["code"] == ClassificationErrorCode.INVALID_SYMBOL_FORMAT.value
 
 
 def test_classification_unexpected_error_returns_500() -> None:
@@ -176,6 +204,7 @@ def test_openapi_documents_group_reason_enums() -> None:
             _reason_enum_from_signal_schema(openapi, signal_schema_name) == expected_codes
         )
 
+
 def test_undeclared_reason_returns_http_500() -> None:
     undeclared = "not_a_declared_reason"
     bad_result = ClassificationResult(
@@ -202,4 +231,40 @@ def test_undeclared_reason_returns_http_500() -> None:
     assert response.status_code == 500
     body = response.json()
     assert "detail" in body
+    assert body["detail"]["code"] == ClassificationErrorCode.UNDECLARED_REASON.value
     assert undeclared not in response.text
+
+
+def test_invalid_message_params_returns_http_500() -> None:
+    prose = "this contains prose, not a machine token"
+    valid_result = ClassificationResult(
+        symbol="BTC/USDT",
+        regime=(ClassificationSignal(source="regime", score=0.4, reason="trend_up"),),
+        risk=(ClassificationSignal(source="risk", score=0.0, reason="low_risk"),),
+        economic=(
+            ClassificationSignal(source="economic", score=0.0, reason="neutral_edge"),
+        ),
+        exposure=(
+            ClassificationSignal(source="exposure", score=0.0, reason="ample_capacity"),
+        ),
+    )
+
+    application = create_app()
+    application.state.classify_market = MagicMock()
+    application.state.classify_market.execute.return_value = valid_result
+
+    def _raise_invalid_params(group: str, _params: dict[str, object]) -> dict[str, object]:
+        raise InvalidClassificationMessageParamsError(group, f"param contains prose: {prose!r}")
+
+    with patch(
+        "market_data_be.infrastructure.http.mappers.classification._build_params",
+        side_effect=_raise_invalid_params,
+    ):
+        client = TestClient(application, raise_server_exceptions=False)
+        response = client.get("/markets/BTC-USDT/classification")
+
+    assert response.status_code == 500
+    body = response.json()
+    assert "detail" in body
+    assert body["detail"]["code"] == ClassificationErrorCode.INVALID_MESSAGE_PARAMS.value
+    assert prose not in response.text
