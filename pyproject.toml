@@ -22,3 +22,6 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["src", "resources/tests"]
 pythonpath = ["src"]
+
+[tool.vercel]
+entrypoint = "src.market_data_be.infrastructure.http.app:app"
