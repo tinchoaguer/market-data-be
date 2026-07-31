@@ -79,4 +79,3 @@ Without auto-reload: `python -m uvicorn market_data_be.infrastructure.http.app:a
 ```bash
 pytest
 ```
-
