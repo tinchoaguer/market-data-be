@@ -9,6 +9,8 @@ Factory alternative::
     uvicorn market_data_be.infrastructure.http.app:create_app --factory
 """
 
+import os
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -59,12 +61,36 @@ _LOCAL_FRONTEND_ORIGINS = (
     "http://127.0.0.1:5174",
 )
 
+# Comma-separated production/preview FE origins (no trailing slash), e.g. on Vercel:
+# CORS_ALLOW_ORIGINS=https://market-data-fe.vercel.app
+_CORS_ALLOW_ORIGINS_ENV = "CORS_ALLOW_ORIGINS"
+
+
+def cors_allow_origins(
+    env_value: str | None = None,
+) -> list[str]:
+    """Local Vite origins plus optional CORS_ALLOW_ORIGINS from the environment."""
+    raw = os.getenv(_CORS_ALLOW_ORIGINS_ENV, "") if env_value is None else env_value
+    extras = [
+        origin.strip().rstrip("/")
+        for origin in raw.split(",")
+        if origin.strip()
+    ]
+    origins: list[str] = []
+    seen: set[str] = set()
+    for origin in (*_LOCAL_FRONTEND_ORIGINS, *extras):
+        if origin in seen:
+            continue
+        seen.add(origin)
+        origins.append(origin)
+    return origins
+
 
 def create_app() -> FastAPI:
     application = FastAPI(title=APP_TITLE, version=APP_VERSION)
     application.add_middleware(
         CORSMiddleware,
-        allow_origins=list(_LOCAL_FRONTEND_ORIGINS),
+        allow_origins=cors_allow_origins(),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
